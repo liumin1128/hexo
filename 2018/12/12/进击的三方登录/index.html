@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="假设一名轻度用户，偶然看到一篇不错的文章，想刷666却被登录注册拦住了。 最讨厌输入用户名密码什么的了！！！ 默默点击了关闭…… 用户看帖老不回，多半是退了。 你可能需要【三方登录】。 作者收集了尽可能多的三方登录方案，最终实现了qq，微信，微博，github，outlook5种。 历经千辛万苦终于集齐了7颗龙珠，是时候召唤真正的神龙了！ 体验地址：https://react.mobi/login">
+<meta name="keywords" content="后端,Oauth2.0,三方登录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进击的三方登录">
+<meta property="og:url" content="http://liumin.me/2018/12/12/进击的三方登录/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="假设一名轻度用户，偶然看到一篇不错的文章，想刷666却被登录注册拦住了。 最讨厌输入用户名密码什么的了！！！ 默默点击了关闭…… 用户看帖老不回，多半是退了。 你可能需要【三方登录】。 作者收集了尽可能多的三方登录方案，最终实现了qq，微信，微博，github，outlook5种。 历经千辛万苦终于集齐了7颗龙珠，是时候召唤真正的神龙了！ 体验地址：https://react.mobi/login">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://imgs.react.mobi/FgsibYnm91DnsuOnhfJUgDMsgjjB">
+<meta property="og:image" content="https://imgs.react.mobi/Fh5po6YWSHLTT4WvVpNAQyGZReJP">
+<meta property="og:updated_time" content="2018-12-12T06:27:24.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进击的三方登录">
+<meta name="twitter:description" content="假设一名轻度用户，偶然看到一篇不错的文章，想刷666却被登录注册拦住了。 最讨厌输入用户名密码什么的了！！！ 默默点击了关闭…… 用户看帖老不回，多半是退了。 你可能需要【三方登录】。 作者收集了尽可能多的三方登录方案，最终实现了qq，微信，微博，github，outlook5种。 历经千辛万苦终于集齐了7颗龙珠，是时候召唤真正的神龙了！ 体验地址：https://react.mobi/login">
+<meta name="twitter:image" content="https://imgs.react.mobi/FgsibYnm91DnsuOnhfJUgDMsgjjB">
+
+
+
+
+
+
+  <link rel="canonical" href="http://liumin.me/2018/12/12/进击的三方登录/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>进击的三方登录 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/12/12/进击的三方登录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">进击的三方登录
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-12 13:14:31 / Modified: 14:27:24" itemprop="dateCreated datePublished" datetime="2018-12-12T13:14:31+08:00">2018-12-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>假设一名轻度用户，偶然看到一篇不错的文章，想刷666却被登录注册拦住了。</p>
+<p>最讨厌输入用户名密码什么的了！！！</p>
+<p>默默点击了关闭……</p>
+<p>用户看帖老不回，多半是退了。</p>
+<p>你可能需要【三方登录】。</p>
+<p>作者收集了尽可能多的三方登录方案，最终实现了qq，微信，微博，github，outlook5种。</p>
+<p>历经千辛万苦终于集齐了7颗龙珠，是时候召唤真正的神龙了！</p>
+<p>体验地址：<a href="https://react.mobi/login" target="_blank" rel="noopener">https://react.mobi/login</a></p>
+<p><img src="https://imgs.react.mobi/FgsibYnm91DnsuOnhfJUgDMsgjjB" alt=""></p>
+<p>关于如何实现三方登录，大概是这样的逻辑：</p>
+<p><img src="https://imgs.react.mobi/Fh5po6YWSHLTT4WvVpNAQyGZReJP" alt=""></p>
+<p>先来看下我的路由。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const router = new Router();</span><br><span class="line"></span><br><span class="line">export default router</span><br><span class="line">  .get(&apos;/github&apos;, github.login)</span><br><span class="line">  .get(&apos;/github/callback&apos;, github.callback)</span><br><span class="line">  </span><br><span class="line">  .get(&apos;/wechat&apos;, wechat.login)</span><br><span class="line">  .get(&apos;/wechat/callback&apos;, wechat.callback)</span><br><span class="line">  </span><br><span class="line">  .get(&apos;/qq&apos;, qq.login)</span><br><span class="line">  .get(&apos;/qq/callback&apos;, qq.callback)</span><br><span class="line">  </span><br><span class="line">  .get(&apos;/weibo&apos;, weibo.login)</span><br><span class="line">  .get(&apos;/weibo/callback&apos;, weibo.callback)</span><br><span class="line">  </span><br><span class="line">  .get(&apos;/outlook&apos;, outlook.login)</span><br><span class="line">  .get(&apos;/outlook/callback&apos;, outlook.callback);</span><br></pre></td></tr></table></figure>
+<p>很好，是同一个医生。</p>
+<p>可以看出，要实现精简的三方登录只需两步，将请求转发到对应服务器，以及接受回调。</p>
+<p>先来看微信的实现：</p>
+<h6 id="微信"><a href="#微信" class="headerlink" title="微信"></a>微信</h6><p>这边直接给出与核心逻辑无关的三个工具方法，不同平台有差异，但功能是一样的。</p>
+<p>拼接url<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function getOauthUrl() &#123;</span><br><span class="line">  let url = &apos;https://open.weixin.qq.com/connect/qrconnect&apos;;</span><br><span class="line">  url += `?appid=$&#123;wechat.appid&#125;`;</span><br><span class="line">  url += `&amp;redirect_uri=$&#123;API_DOMAIN&#125;/oauth/wechat/callback`;</span><br><span class="line">  url += &apos;&amp;response_type=code&amp;scope=snsapi_login&amp;state=123#wechat_redirect &apos;;</span><br><span class="line">  return url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>获取access_token，三方登录的核心方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">async function getAccessToken(code) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842</span><br><span class="line"></span><br><span class="line">    let url = &apos;https://api.weixin.qq.com/sns/oauth2/access_token&apos;;</span><br><span class="line">    url += `?appid=$&#123;wechat.appid&#125;`;</span><br><span class="line">    url += `&amp;secret=$&#123;wechat.secret&#125;`;</span><br><span class="line">    url += `&amp;code=$&#123;code&#125;`;</span><br><span class="line">    url += &apos;&amp;grant_type=authorization_code&apos;;</span><br><span class="line"></span><br><span class="line">    const data = await fetch(url);</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    //     &#123; &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,</span><br><span class="line">    // &quot;expires_in&quot;:7200,</span><br><span class="line">    // &quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,</span><br><span class="line">    // &quot;openid&quot;:&quot;OPENID&quot;,</span><br><span class="line">    // &quot;scope&quot;:&quot;SCOPE&quot; &#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>获取用户信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">async function getUserInfo(access_token, openid) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // http://wiki.connect.qq.com/get_user_info</span><br><span class="line"></span><br><span class="line">    let url = &apos;https://api.weixin.qq.com/sns/userinfo&apos;;</span><br><span class="line">    url += `?access_token=$&#123;access_token&#125;`;</span><br><span class="line">    url += `&amp;openid=$&#123;openid&#125;`;</span><br><span class="line">    url += &apos;&amp;lang=zh_CN&apos;;</span><br><span class="line"></span><br><span class="line">    const data = await fetch(url);</span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    //     &#123;    &quot;openid&quot;:&quot; OPENID&quot;,</span><br><span class="line">    // &quot; nickname&quot;: NICKNAME,</span><br><span class="line">    // &quot;sex&quot;:&quot;1&quot;,</span><br><span class="line">    // &quot;province&quot;:&quot;PROVINCE&quot;</span><br><span class="line">    // &quot;city&quot;:&quot;CITY&quot;,</span><br><span class="line">    // &quot;country&quot;:&quot;COUNTRY&quot;,</span><br><span class="line">    // &quot;headimgurl&quot;:    &quot;http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46&quot;,</span><br><span class="line">    // &quot;privilege&quot;:[ &quot;PRIVILEGE1&quot; &quot;PRIVILEGE2&quot;     ],</span><br><span class="line">    // &quot;unionid&quot;: &quot;o6_bmasdasdsad6_2sgVt7hMZOPfL&quot;</span><br><span class="line">    // &#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后是三方登录第一步，将用户请求重定向到指定url</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">login(ctx) &#123;</span><br><span class="line">    console.log(&apos;微信账号登录&apos;);</span><br><span class="line">    ctx.redirect(getOauthUrl());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一步按文档拼接即可，其实可以省略，前端直接去请求拼接好的url也是可以的，这边只是为了让前端更加简洁，就放在后端实现了。</p>
+<p>第二步，接受服务器回调，拿到code。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">async callback(ctx) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      console.log(&apos;微信账号登录回调&apos;);</span><br><span class="line">      const &#123; code &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">      const data = await getAccessToken(code);</span><br><span class="line">      const &#123; access_token, openid, unionid &#125; = data;</span><br><span class="line">      if (!access_token) &#123;</span><br><span class="line">        console.log(&apos;微信获取access_token失败&apos;);</span><br><span class="line">        ctx.redirect(DOMAIN);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 从数据库查找对应用户第三方登录信息</span><br><span class="line">      let oauth = await Oauth.findOne(&#123; from: &apos;wechat&apos;, &apos;data.unionid&apos;: unionid &#125;);</span><br><span class="line"></span><br><span class="line">      if (oauth) &#123;</span><br><span class="line">        // 更新三方登录信息</span><br><span class="line">        await oauth.update(&#123; data &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // 如果不存在则获取用户信息，创建新用户，并保存该用户的第三方登录信息</span><br><span class="line">        const userInfo = await getUserInfo(access_token, openid);</span><br><span class="line">        const &#123; nickname, headimgurl &#125; = userInfo;</span><br><span class="line">        // 将用户头像上传至七牛，避免头像过期或无法访问</span><br><span class="line">        const avatarUrl = await fetchToQiniu(headimgurl);</span><br><span class="line">        // 创建该用户</span><br><span class="line">        const user = await User.create(&#123; avatarUrl, nickname &#125;);</span><br><span class="line">        // 创建三方登录信息</span><br><span class="line">        oauth = await Oauth.create(&#123; from: &apos;wechat&apos;, data, userInfo, user &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      // 生成token（用户身份令牌）</span><br><span class="line">      const token = await getUserToken(oauth.user);</span><br><span class="line">      // 重定向页面到用户登录页，并返回token</span><br><span class="line">      ctx.redirect(`$&#123;DOMAIN&#125;/login/oauth?token=$&#123;token&#125;`);</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      ctx.redirect(DOMAIN);</span><br><span class="line">      console.log(&apos;error&apos;);</span><br><span class="line">      console.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>以上就是全部逻辑了，基本上其他平台也是相同的套路。</p>
+<p>拿到code去换取access_token，以及一个用户唯一id。</p>
+<p>在我的逻辑中，三方登录会将三方登录信息存在oauth表中。用户授权以后，通过平台来源和唯一id，自然可以查到有无登录记录，若有，则更新授权信息，若无，则新建。</p>
+<p>其中，若新建用户，需要挑选出用户昵称和头像，头像要存在自己的服务器中，避免头像失效。</p>
+<p>通过以上流程，就可以拿到用户信息，完成登录。</p>
+<p>下面放出其他平台的实现，逻辑是一样的，给需要的同学吧。</p>
+<h4 id="qq"><a href="#qq" class="headerlink" title="qq"></a>qq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line">function getOauthUrl() &#123;</span><br><span class="line">  let url = &apos;https://graph.qq.com/oauth2.0/authorize&apos;;</span><br><span class="line">  url += `?client_id=$&#123;qq.App_Id&#125;`;</span><br><span class="line">  url += `&amp;redirect_uri=$&#123;API_DOMAIN&#125;/oauth/qq/callback`;</span><br><span class="line">  url += &apos;&amp;state=state123&apos;;</span><br><span class="line">  url += &apos;&amp;scope=get_user_info&apos;;</span><br><span class="line">  url += &apos;&amp;response_type=code&apos;;</span><br><span class="line">  return url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getAccessToken(code) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // http://wiki.connect.qq.com/%E4%BD%BF%E7%94%A8authorization_code%E8%8E%B7%E5%8F%96access_token</span><br><span class="line"></span><br><span class="line">    let url = &apos;https://graph.qq.com/oauth2.0/token&apos;;</span><br><span class="line">    url += `?client_id=$&#123;qq.App_Id&#125;`;</span><br><span class="line">    url += `&amp;client_secret=$&#123;qq.App_Key&#125;`;</span><br><span class="line">    url += `&amp;code=$&#123;code&#125;`;</span><br><span class="line">    url += &apos;&amp;grant_type=authorization_code&apos;;</span><br><span class="line">    url += `&amp;redirect_uri=$&#123;API_DOMAIN&#125;/oauth/qq/callback`;</span><br><span class="line"></span><br><span class="line">    const data = await fetch(url, &#123; method: &apos;GET&apos; &#125;)</span><br><span class="line">      .then(res =&gt; res.text())</span><br><span class="line">      .then(res =&gt; parse(res));</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    // access_token,expires_in,refresh_token</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getOpenid(access_token) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // http://wiki.connect.qq.com/%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7openid_oauth2-0</span><br><span class="line"></span><br><span class="line">    const url = `https://graph.qq.com/oauth2.0/me?access_token=$&#123;access_token&#125;`;</span><br><span class="line">    const data = await fetch(url, &#123; method: &apos;GET&apos; &#125;)</span><br><span class="line">      .then(res =&gt; res.text())</span><br><span class="line">      .then((res) =&gt; &#123;</span><br><span class="line">        let str = res.replace(&apos;callback( &apos;, &apos;&apos;);</span><br><span class="line">        str = str.replace(&apos; );&apos;, &apos;&apos;);</span><br><span class="line">        return JSON.parse(str);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    // &#123;&quot;client_id&quot;:&quot;YOUR_APPID&quot;,&quot;openid&quot;:&quot;YOUR_OPENID&quot;&#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getUserInfo(access_token, openid) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // http://wiki.connect.qq.com/get_user_info</span><br><span class="line">    let url = &apos;https://graph.qq.com/user/get_user_info&apos;;</span><br><span class="line">    url += `?access_token=$&#123;access_token&#125;`;</span><br><span class="line">    url += `&amp;oauth_consumer_key=$&#123;qq.App_Id&#125;`;</span><br><span class="line">    url += `&amp;openid=$&#123;openid&#125;`;</span><br><span class="line"></span><br><span class="line">    const data = await fetch(url, &#123; method: &apos;GET&apos; &#125;)</span><br><span class="line">      .then(res =&gt; res.json());</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    // &#123;</span><br><span class="line">    //   &quot;ret&quot;:0,</span><br><span class="line">    //   &quot;msg&quot;:&quot;&quot;,</span><br><span class="line">    //   &quot;nickname&quot;:&quot;Peter&quot;,</span><br><span class="line">    //   &quot;figureurl&quot;:&quot;http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/30&quot;,</span><br><span class="line">    //   &quot;figureurl_1&quot;:&quot;http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/50&quot;,</span><br><span class="line">    //   &quot;figureurl_2&quot;:&quot;http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/100&quot;,</span><br><span class="line">    //   &quot;figureurl_qq_1&quot;:&quot;http://q.qlogo.cn/qqapp/100312990/DE1931D5330620DBD07FB4A5422917B6/40&quot;,</span><br><span class="line">    //   &quot;figureurl_qq_2&quot;:&quot;http://q.qlogo.cn/qqapp/100312990/DE1931D5330620DBD07FB4A5422917B6/100&quot;,</span><br><span class="line">    //   &quot;gender&quot;:&quot;男&quot;,</span><br><span class="line">    //   &quot;is_yellow_vip&quot;:&quot;1&quot;,</span><br><span class="line">    //   &quot;vip&quot;:&quot;1&quot;,</span><br><span class="line">    //   &quot;yellow_vip_level&quot;:&quot;7&quot;,</span><br><span class="line">    //   &quot;level&quot;:&quot;7&quot;,</span><br><span class="line">    //   &quot;is_yellow_year_vip&quot;:&quot;1&quot;</span><br><span class="line">    //   &#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async login(ctx) &#123;</span><br><span class="line">    console.log(&apos;qq账号登录&apos;);</span><br><span class="line">    ctx.redirect(getOauthUrl());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  async callback(ctx) &#123;</span><br><span class="line">    console.log(&apos;qq账号登录回调&apos;);</span><br><span class="line">    try &#123;</span><br><span class="line">      const &#123; code &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">      const data = await getAccessToken(code);</span><br><span class="line">      const &#123; access_token &#125; = data;</span><br><span class="line"></span><br><span class="line">      if (!access_token) &#123;</span><br><span class="line">        console.log(&apos;qq获取access_token失败&apos;);</span><br><span class="line">        ctx.redirect(DOMAIN);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      const &#123; openid &#125; = await getOpenid(access_token);</span><br><span class="line">      if (!openid) &#123;</span><br><span class="line">        console.log(&apos;qq获取openid失败&apos;);</span><br><span class="line">        ctx.redirect(DOMAIN);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // qq比较特殊，openid居然还要再单独获取一次</span><br><span class="line">      data.openid = openid;</span><br><span class="line"></span><br><span class="line">      // 从数据库查找对应用户第三方登录信息</span><br><span class="line">      let oauth = await Oauth.findOne(&#123; from: &apos;qq&apos;, &apos;data.openid&apos;: openid &#125;);</span><br><span class="line"></span><br><span class="line">      if (oauth) &#123;</span><br><span class="line">        // 更新三方登录信息</span><br><span class="line">        console.log(&apos;更新三方登录信息&apos;);</span><br><span class="line">        console.log(data);</span><br><span class="line">        await oauth.update(&#123; data &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // 如果不存在则获取用户信息，创建新用户，并保存该用户的第三方登录信息</span><br><span class="line">        const userInfo = await getUserInfo(access_token, openid);</span><br><span class="line">        const &#123; nickname, figureurl_qq_1, figureurl_qq_2 &#125; = userInfo;</span><br><span class="line">        // 将用户头像上传至七牛，避免头像过期或无法访问</span><br><span class="line">        const avatarUrl = await fetchToQiniu(figureurl_qq_2 || figureurl_qq_1);</span><br><span class="line">        // 创建该用户</span><br><span class="line">        const user = await User.create(&#123; avatarUrl, nickname &#125;);</span><br><span class="line">        // 创建三方登录信息</span><br><span class="line">        oauth = await Oauth.create(&#123; from: &apos;qq&apos;, data, userInfo, user &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 生成token（用户身份令牌）</span><br><span class="line">      const token = await getUserToken(oauth.user);</span><br><span class="line">      // 重定向页面到用户登录页，并返回token</span><br><span class="line">      ctx.redirect(`$&#123;DOMAIN&#125;/login/oauth?token=$&#123;token&#125;`);</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      ctx.redirect(DOMAIN);</span><br><span class="line">      console.log(&apos;error&apos;);</span><br><span class="line">      console.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="新浪微博"><a href="#新浪微博" class="headerlink" title="新浪微博"></a>新浪微博</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">function getOauthUrl() &#123;</span><br><span class="line">  let url = &apos;https://api.weibo.com/oauth2/authorize&apos;;</span><br><span class="line">  url += `?client_id=$&#123;weibo.App_Key&#125;`;</span><br><span class="line">  url += `&amp;redirect_uri=$&#123;weibo.redirect_uri&#125;`;</span><br><span class="line">  return url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getAccessToken(code) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    let url = &apos;https://api.weibo.com/oauth2/access_token&apos;;</span><br><span class="line">    url += `?client_id=$&#123;weibo.App_Key&#125;`;</span><br><span class="line">    url += `&amp;client_secret=$&#123;weibo.App_Secret&#125;`;</span><br><span class="line">    url += `&amp;code=$&#123;code&#125;`;</span><br><span class="line">    url += &apos;&amp;grant_type=authorization_code&apos;;</span><br><span class="line">    url += `&amp;redirect_uri=$&#123;weibo.redirect_uri&#125;`;</span><br><span class="line"></span><br><span class="line">    const data = await request(url);</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getUserInfo(access_token, uid) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const data = await fetch(`https://api.weibo.com/2/users/show.json?access_token=$&#123;access_token&#125;&amp;uid=$&#123;uid&#125;`, &#123; method: &apos;GET&apos; &#125;)</span><br><span class="line">      .then((res) =&gt; &#123;</span><br><span class="line">        return res.json();</span><br><span class="line">      &#125;);</span><br><span class="line">    return data;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async login(ctx) &#123;</span><br><span class="line">    console.log(&apos;微博用户登录&apos;);</span><br><span class="line">    ctx.redirect(getOauthUrl());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  async callback(ctx) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      const &#123; code &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">      const data = await getAccessToken(code);</span><br><span class="line">      const &#123; access_token, uid &#125; = data;</span><br><span class="line">      if (!access_token) &#123;</span><br><span class="line">        ctx.redirect(DOMAIN);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 从数据库查找对应用户第三方登录信息</span><br><span class="line">      let oauth = await Oauth.findOne(&#123; from: &apos;weibo&apos;, &apos;data.uid&apos;: uid &#125;);</span><br><span class="line"></span><br><span class="line">      // 如果不存在则创建新用户，并保存该用户的第三方登录信息</span><br><span class="line">      if (oauth) &#123;</span><br><span class="line">        // 更新三方登录信息</span><br><span class="line">        console.log(&apos;更新三方登录信息&apos;);</span><br><span class="line">        console.log(data);</span><br><span class="line">        await oauth.update(&#123; data &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // 获取用户信息</span><br><span class="line">        const userInfo = await getUserInfo(access_token, uid);</span><br><span class="line">        const &#123; name: nickname, profile_image_url &#125; = userInfo;</span><br><span class="line">        // // 将用户头像上传至七牛</span><br><span class="line">        const avatarUrl = await fetchToQiniu(profile_image_url);</span><br><span class="line">        const user = await User.create(&#123; avatarUrl, nickname &#125;);</span><br><span class="line">        oauth = await Oauth.create(&#123; from: &apos;weibo&apos;, data, userInfo, user &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      // 生成token（用户身份令牌）</span><br><span class="line">      const token = await getUserToken(oauth.user);</span><br><span class="line">      // 重定向页面到用户登录页，并返回token</span><br><span class="line">      ctx.redirect(`$&#123;DOMAIN&#125;/login/oauth?token=$&#123;token&#125;`);</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      ctx.redirect(DOMAIN);</span><br><span class="line"></span><br><span class="line">      console.log(&apos;error&apos;);</span><br><span class="line">      console.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">function getOauthUrl() &#123;</span><br><span class="line">  const dataStr = (new Date()).valueOf();</span><br><span class="line">  let url = &apos;https://github.com/login/oauth/authorize&apos;;</span><br><span class="line">  url += `?client_id=$&#123;github.client_id&#125;`;</span><br><span class="line">  url += `&amp;scope=$&#123;github.scope&#125;`;</span><br><span class="line">  url += `&amp;state=$&#123;dataStr&#125;`;</span><br><span class="line">  return url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getAccessToken(code) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 文档地址</span><br><span class="line">    // https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842</span><br><span class="line"></span><br><span class="line">    const url = &apos;https://github.com/login/oauth/access_token&apos;;</span><br><span class="line">    const params = &#123; client_id: github.client_id, client_secret: github.client_secret, code &#125;;</span><br><span class="line">    const data = await fetch(url, params);</span><br><span class="line"></span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    // &#123;&quot;access_token&quot;:&quot;e72e16c7e42f292c6912e7710c838347ae178b4a&quot;,</span><br><span class="line">    // &quot;scope&quot;:&quot;repo,gist&quot;,</span><br><span class="line">    // &quot;token_type&quot;:&quot;bearer&quot;&#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async function getUserInfo(access_token) &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const data = await fetch(`https://api.github.com/user?access_token=$&#123;access_token&#125;`);</span><br><span class="line">    return data;</span><br><span class="line">    // 返回值示例</span><br><span class="line">    //   &#123;</span><br><span class="line">    //     &quot;login&quot;: &quot;Diamondtest&quot;,</span><br><span class="line">    //     &quot;id&quot;: 28478049,</span><br><span class="line">    //     &quot;avatar_url&quot;: &quot;https://avatars0.githubusercontent.com/u/28478049?v=3&quot;,</span><br><span class="line">    //     &quot;gravatar_id&quot;: &quot;&quot;,</span><br><span class="line">    //     &quot;url&quot;: &quot;https://api.github.com/users/Diamondtest&quot;,</span><br><span class="line">    //     &quot;html_url&quot;: &quot;https://github.com/Diamondtest&quot;,</span><br><span class="line">    //     &quot;followers_url&quot;: &quot;https://api.github.com/users/Diamondtest/followers&quot;,</span><br><span class="line">    //     &quot;following_url&quot;: &quot;https://api.github.com/users/Diamondtest/following&#123;/other_user&#125;&quot;,</span><br><span class="line">    //     &quot;gists_url&quot;: &quot;https://api.github.com/users/Diamondtest/gists&#123;/gist_id&#125;&quot;,</span><br><span class="line">    //     &quot;starred_url&quot;: &quot;https://api.github.com/users/Diamondtest/starred&#123;/owner&#125;&#123;/repo&#125;&quot;,</span><br><span class="line">    //     &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/Diamondtest/subscriptions&quot;,</span><br><span class="line">    //     &quot;organizations_url&quot;: &quot;https://api.github.com/users/Diamondtest/orgs&quot;,</span><br><span class="line">    //     &quot;repos_url&quot;: &quot;https://api.github.com/users/Diamondtest/repos&quot;,</span><br><span class="line">    //     &quot;events_url&quot;: &quot;https://api.github.com/users/Diamondtest/events&#123;/privacy&#125;&quot;,</span><br><span class="line">    //     &quot;received_events_url&quot;: &quot;https://api.github.com/users/Diamondtest/received_events&quot;,</span><br><span class="line">    //     &quot;type&quot;: &quot;User&quot;,</span><br><span class="line">    //     &quot;site_admin&quot;: false,</span><br><span class="line">    //     &quot;name&quot;: null,</span><br><span class="line">    //     &quot;company&quot;: null,</span><br><span class="line">    //     &quot;blog&quot;: &quot;&quot;,</span><br><span class="line">    //     &quot;location&quot;: null,</span><br><span class="line">    //     &quot;email&quot;: null,</span><br><span class="line">    //     &quot;hireable&quot;: null,</span><br><span class="line">    //     &quot;bio&quot;: null,</span><br><span class="line">    //     &quot;public_repos&quot;: 0,</span><br><span class="line">    //     &quot;public_gists&quot;: 0,</span><br><span class="line">    //     &quot;followers&quot;: 0,</span><br><span class="line">    //     &quot;following&quot;: 0,</span><br><span class="line">    //     &quot;created_at&quot;: &quot;2017-05-06T08:08:09Z&quot;,</span><br><span class="line">    //     &quot;updated_at&quot;: &quot;2017-05-06T08:16:22Z&quot;</span><br><span class="line">    // &#125;</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.log(&apos;error&apos;);</span><br><span class="line">    console.log(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async login(ctx) &#123;</span><br><span class="line">    console.log(&apos;github用户登录&apos;);</span><br><span class="line">    ctx.redirect(getOauthUrl());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  async callback(ctx) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      const &#123; code &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">      const data = await getAccessToken(code);</span><br><span class="line">      const &#123; access_token &#125; = data;</span><br><span class="line"></span><br><span class="line">      // github得先去获取用户信息才能知道唯一id</span><br><span class="line">      const userInfo = await getUserInfo(access_token);</span><br><span class="line">      const &#123; id &#125; = userInfo;</span><br><span class="line"></span><br><span class="line">      data.id = id;</span><br><span class="line"></span><br><span class="line">      // 从数据库查找对应用户第三方登录信息</span><br><span class="line">      let oauth = await Oauth.findOne(&#123; from: &apos;github&apos;, &apos;data.id&apos;: id &#125;);</span><br><span class="line"></span><br><span class="line">      if (oauth) &#123;</span><br><span class="line">        // 更新三方登录信息</span><br><span class="line">        console.log(&apos;更新三方登录信息&apos;);</span><br><span class="line">        console.log(data);</span><br><span class="line">        await oauth.update(&#123; data, userInfo &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // 如果不存在则创建新用户，并保存该用户的第三方登录信息</span><br><span class="line">        const &#123; avatar_url, name, login &#125; = userInfo;</span><br><span class="line">        const nickname = name || login;</span><br><span class="line">        const avatarUrl = await fetchToQiniu(avatar_url);</span><br><span class="line">        const user = await User.create(&#123; avatarUrl, nickname &#125;);</span><br><span class="line">        oauth = await Oauth.create(&#123; from: &apos;github&apos;, data, userInfo, user &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      // 生成token（用户身份令牌）</span><br><span class="line">      const token = await getUserToken(oauth.user);</span><br><span class="line">      // 重定向页面到用户登录页，并返回token</span><br><span class="line">      ctx.redirect(`$&#123;DOMAIN&#125;/login/oauth?token=$&#123;token&#125;`);</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      ctx.redirect(DOMAIN);</span><br><span class="line">      console.log(&apos;error&apos;);</span><br><span class="line">      console.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Outlook"><a href="#Outlook" class="headerlink" title="Outlook"></a>Outlook</h4><p>outlook最奇葩，做成了一团，可能是没仔细研究吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">async function getOauth(code) &#123;</span><br><span class="line">  console.log(&apos;new user just submitted the code&apos;);</span><br><span class="line">  console.log(`code：$&#123;code&#125;`);</span><br><span class="line"></span><br><span class="line">  // 下面构造个post请求，换取用户信息</span><br><span class="line">  const url = &apos;https://login.microsoftonline.com/common/oauth2/v2.0/token&apos;;</span><br><span class="line"></span><br><span class="line">  const params = &#123;</span><br><span class="line">    // client_id：通过注册应用程序生成的客户端ID</span><br><span class="line">    client_id: config.client_id,</span><br><span class="line">    // client_secret：通过注册应用程序生成的客户端密钥。</span><br><span class="line">    client_secret: config.client_secret,</span><br><span class="line">    // code：在前一步骤中获得的授权码。</span><br><span class="line">    code,</span><br><span class="line">    // redirect_uri：此值必须与授权代码请求中使用的值相同。</span><br><span class="line">    redirect_uri: config.redirect_uri,</span><br><span class="line">    // grant_type：应用程序使用的授权类型。对于授权授权流程，应始终如此authorization_code</span><br><span class="line">    grant_type: config.grant_type,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  const paramsTemp = new URLSearchParams();</span><br><span class="line"></span><br><span class="line">  Object.keys(params).map((key) =&gt; &#123;</span><br><span class="line">    paramsTemp.append(key, params[key]);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  // 这些参数被编码为application/x-www-form-urlencoded内容类型并发送到令牌请求URL。</span><br><span class="line">  const options = &#123;</span><br><span class="line">    method: &apos;POST&apos;,</span><br><span class="line">    headers: &#123;</span><br><span class="line">      &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;,</span><br><span class="line">    &#125;,</span><br><span class="line">    body: paramsTemp,</span><br><span class="line">  &#125;;</span><br><span class="line">  const data = await fetch(url, &#123;&#125;, options);</span><br><span class="line">  const buff = Buffer.from(data.id_token.split(&apos;.&apos;)[1], &apos;base64&apos;);</span><br><span class="line">  const result = JSON.parse(buff.toString());</span><br><span class="line">  result.token = data;</span><br><span class="line"></span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async login(ctx) &#123;</span><br><span class="line">    console.log(&apos;a new user want to login in outlook&apos;);</span><br><span class="line">    console.log(&apos;config&apos;);</span><br><span class="line">    console.log(config);</span><br><span class="line"></span><br><span class="line">    // 重定向到认证接口,并配置参数</span><br><span class="line">    let path = &apos;https://login.microsoftonline.com/common/oauth2/v2.0/authorize&apos;;</span><br><span class="line"></span><br><span class="line">    // client_id 通过注册应用程序生成的客户端ID。这使Azure知道哪个应用程序正在请求登录。</span><br><span class="line">    path += `?client_id=$&#123;config.client_id&#125;`;</span><br><span class="line"></span><br><span class="line">    // redirect_uri 一旦用户同意应用程序，Azure将重定向到的位置。此值必须与注册应用程序时使用的重定向URI的值相对应</span><br><span class="line">    path += `&amp;redirect_uri=$&#123;encodeURI(config.redirect_uri)&#125;`;</span><br><span class="line"></span><br><span class="line">    // response_type 应用程序期望的响应类型。对于授权授权流程，应始终如此code</span><br><span class="line">    path += `&amp;response_type=$&#123;config.response_type&#125;`;</span><br><span class="line"></span><br><span class="line">    // scope 您的应用所需的以空格分隔的访问范围列表。有关Microsoft Graph中Outlook范围的完整列表</span><br><span class="line">    // 具体参考：https://developer.microsoft.com/graph/docs/authorization/permission_scopes</span><br><span class="line">    path += `&amp;scope=$&#123;config.scope&#125;`;</span><br><span class="line"></span><br><span class="line">    // 转发到授权服务器</span><br><span class="line">    ctx.redirect(path);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  async callback(ctx) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      const &#123; code &#125; = ctx.query;</span><br><span class="line">      const result = await getOauth(code);</span><br><span class="line"></span><br><span class="line">      // 从数据库查找对应用户第三方登录信息</span><br><span class="line">      let oauth = await Oauth.findOne(&#123; from: &apos;outlook&apos;, &apos;data.preferred_username&apos;: result.preferred_username &#125;);</span><br><span class="line">      if (!oauth) &#123;</span><br><span class="line">        // 前面半天都是为了获取用户在此app的唯一标识，username，拿稳存好</span><br><span class="line">        const &#123; preferred_username: username, name: nickname &#125; = result;</span><br><span class="line">        // outlook 暂时不知道怎么拿用户头像</span><br><span class="line">        const user = await User.create(&#123; username, nickname, avatarUrl: &apos;https://imgs.react.mobi/FthXc5PBp6PrhR7z9RJI6aaa46Ue&apos; &#125;);</span><br><span class="line">        // 用户第三方信息存一下</span><br><span class="line">        oauth = await Oauth.create(&#123; from: &apos;outlook&apos;, data: result, user &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        const ssss = await oauth.update(&#123; data: result &#125;);</span><br><span class="line">        // todo 刷新一下用户信息，避免token过期</span><br><span class="line">        console.log(&apos;ssss&apos;);</span><br><span class="line">        console.log(ssss);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 生成token（用户身份令牌）</span><br><span class="line">      const token = await getUserToken(oauth.user);</span><br><span class="line"></span><br><span class="line">      //</span><br><span class="line">      //</span><br><span class="line">      // 这里注意，我们使用简易方式，直接将jwt传给前端，</span><br><span class="line">      // 如果安全性要求较高，或者有过期时间的需求，可以使用redis存缓token，只将引索传给前端</span><br><span class="line">      //</span><br><span class="line">      //</span><br><span class="line">      // 重定向页面到用户登录页，并返回token</span><br><span class="line">      ctx.redirect(`$&#123;DOMAIN&#125;/login/oauth?token=$&#123;token&#125;`);</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      console.log(&apos;error&apos;);</span><br><span class="line">      console.log(error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码仅在我这边运行良好，具体运用请自行调试。</p>
+<p>我封装的request库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import fetch from &apos;node-fetch&apos;;</span><br><span class="line"></span><br><span class="line">export default (url, params = &#123;&#125;, options = &#123;&#125;) =&gt; &#123;</span><br><span class="line">  return fetch(url, &#123;</span><br><span class="line">    method: &apos;POST&apos;,</span><br><span class="line">    headers: &#123;</span><br><span class="line">      &apos;Content-Type&apos;: &apos;application/json&apos;,</span><br><span class="line">      accept: &apos;application/json&apos;,</span><br><span class="line">    &#125;,</span><br><span class="line">    body: JSON.stringify(params),</span><br><span class="line">    ...options,</span><br><span class="line">  &#125;)</span><br><span class="line">    .then((res) =&gt; &#123;</span><br><span class="line">      return res.json();</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch((e) =&gt; &#123;</span><br><span class="line">      console.log(e);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/后端/" rel="tag"># 后端</a>
+          
+            <a href="/tags/Oauth2-0/" rel="tag"># Oauth2.0</a>
+          
+            <a href="/tags/三方登录/" rel="tag"># 三方登录</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/21/免密码登录/" rel="next" title="免密码登录">
+                <i class="fa fa-chevron-left"></i> 免密码登录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#微信"><span class="nav-number">1.</span> <span class="nav-text">微信</span></a></li></ol><li class="nav-item nav-level-4"><a class="nav-link" href="#qq"><span class="nav-number"></span> <span class="nav-text">qq</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新浪微博"><span class="nav-number"></span> <span class="nav-text">新浪微博</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Github"><span class="nav-number"></span> <span class="nav-text">Github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Outlook"><span class="nav-number"></span> <span class="nav-text">Outlook</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
