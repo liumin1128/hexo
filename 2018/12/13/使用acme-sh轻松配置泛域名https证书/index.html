@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="国内镜像安装mongodb 1234567891011121314wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-4.0.3-1.el7.x86_64.rpmwget https://mirrors.aliyun.com/mongodb/yum/re">
-<meta name="keywords" content="运维,mongodb">
+  <meta name="description" content="分享下载最新的泛域名https配置方案 Github https://github.com/Neilpang/acme.sh 中文文档 https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E 如果连文档都懒得看，那下文可以帮你 简易教程 12cd ~curl  https://get.acme.sh | sh 如果你的域名在阿里云 1">
+<meta name="keywords" content="运维,https">
 <meta property="og:type" content="article">
-<meta property="og:title" content="国内镜像安装mongodb">
-<meta property="og:url" content="http://liumin.me/2018/11/21/国内镜像安装Mongodb/index.html">
+<meta property="og:title" content="使用acme.sh轻松配置泛域名https证书">
+<meta property="og:url" content="http://liumin.me/2018/12/13/使用acme-sh轻松配置泛域名https证书/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="国内镜像安装mongodb 1234567891011121314wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-4.0.3-1.el7.x86_64.rpmwget https://mirrors.aliyun.com/mongodb/yum/re">
+<meta property="og:description" content="分享下载最新的泛域名https配置方案 Github https://github.com/Neilpang/acme.sh 中文文档 https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E 如果连文档都懒得看，那下文可以帮你 简易教程 12cd ~curl  https://get.acme.sh | sh 如果你的域名在阿里云 1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-21T07:20:36.943Z">
+<meta property="og:updated_time" content="2018-12-13T06:18:13.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="国内镜像安装mongodb">
-<meta name="twitter:description" content="国内镜像安装mongodb 1234567891011121314wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-4.0.3-1.el7.x86_64.rpmwget https://mirrors.aliyun.com/mongodb/yum/re">
+<meta name="twitter:title" content="使用acme.sh轻松配置泛域名https证书">
+<meta name="twitter:description" content="分享下载最新的泛域名https配置方案 Github https://github.com/Neilpang/acme.sh 中文文档 https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E 如果连文档都懒得看，那下文可以帮你 简易教程 12cd ~curl  https://get.acme.sh | sh 如果你的域名在阿里云 1">
 
 
 
 
 
 
-  <link rel="canonical" href="http://liumin.me/2018/11/21/国内镜像安装Mongodb/">
+  <link rel="canonical" href="http://liumin.me/2018/12/13/使用acme-sh轻松配置泛域名https证书/">
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>国内镜像安装mongodb | Hexo</title>
+  <title>使用acme.sh轻松配置泛域名https证书 | Hexo</title>
   
 
 
@@ -335,7 +335,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/11/21/国内镜像安装Mongodb/">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/12/13/使用acme-sh轻松配置泛域名https证书/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -352,7 +352,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">国内镜像安装mongodb
+          <h1 class="post-title" itemprop="name headline">使用acme.sh轻松配置泛域名https证书
               
             
           </h1>
@@ -377,7 +377,7 @@
                 
               
 
-              <time title="Created: 2018-11-21 00:20:21 / Modified: 15:20:36" itemprop="dateCreated datePublished" datetime="2018-11-21T00:20:21+08:00">2018-11-21</time>
+              <time title="Created: 2018-12-13 14:04:39 / Modified: 14:18:13" itemprop="dateCreated datePublished" datetime="2018-12-13T14:04:39+08:00">2018-12-13</time>
             
 
             
@@ -387,24 +387,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -433,8 +415,22 @@
       
 
       
-        <p>国内镜像安装mongodb</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-mongos-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.3-1.el7.x86_64.rpm           </span><br><span class="line">wget https://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/4.0/x86_64/RPMS/mongodb-org-tools-4.0.3-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">rpm -ivh mongodb-org-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mongodb-org-mongos-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mongodb-org-server-4.0.3-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mongodb-org-shell-4.0.3-1.el7.x86_64.rpm           </span><br><span class="line">rpm -ivh mongodb-org-tools-4.0.3-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">service mongod start</span><br><span class="line">service mongod status</span><br></pre></td></tr></table></figure>
+        <p>分享下载最新的泛域名https配置方案</p>
+<p><strong>Github</strong></p>
+<p><a href="https://github.com/Neilpang/acme.sh" target="_blank" rel="noopener">https://github.com/Neilpang/acme.sh</a></p>
+<p><strong>中文文档</strong></p>
+<p><a href="https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E</a></p>
+<p><em>如果连文档都懒得看，那下文可以帮你</em></p>
+<p><strong>简易教程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">curl  https://get.acme.sh | sh</span><br></pre></td></tr></table></figure>
+<p>如果你的域名在阿里云</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.zshrc</span><br><span class="line"></span><br><span class="line">export Ali_Key=&quot;LTAIFkSTVWry7ojD&quot;</span><br><span class="line">export Ali_Secret=&quot;spFIgh04epVykdeUBM0jP4H20lOdVt&quot;</span><br></pre></td></tr></table></figure>
+<p>配置域名，获取证书</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./acme.sh --issue --dns dns_ali -d react.mobi -d *.react.mobi</span><br></pre></td></tr></table></figure>
+<p>应用证书到nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/nginx/ssl</span><br><span class="line"></span><br><span class="line">acme.sh  --installcert  -d  react.mobi   \</span><br><span class="line">        --key-file   /etc/nginx/ssl/react.mobi.key \</span><br><span class="line">        --fullchain-file /etc/nginx/ssl/fullchain.cer \</span><br><span class="line">        --reloadcmd  &quot;service nginx force-reload&quot;</span><br></pre></td></tr></table></figure>
+<p>贴出完整nginx配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name react.mobi www.react.mobi api.react.mobi;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        rewrite ^(.*)$ https://$host$1 last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    server_name www.react.mobi, react.mobi;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3102;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate /etc/nginx/ssl/fullchain.cer;</span><br><span class="line">    ssl_certificate_key /etc/nginx/ssl/react.mobi.key;</span><br><span class="line">    # ssl_session_timeout 5m;</span><br><span class="line">    # ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    # ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;</span><br><span class="line">    # ssl_session_cache shared:SSL:50m;</span><br><span class="line">    # ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    server_name api.react.mobi;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3101;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate /etc/nginx/ssl/fullchain.cer;</span><br><span class="line">    ssl_certificate_key /etc/nginx/ssl/react.mobi.key;</span><br><span class="line">    # ssl_session_timeout 5m;</span><br><span class="line">    # ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    # ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;</span><br><span class="line">    # ssl_session_cache shared:SSL:50m;</span><br><span class="line">    # ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -459,7 +455,7 @@
           
             <a href="/tags/运维/" rel="tag"># 运维</a>
           
-            <a href="/tags/mongodb/" rel="tag"># mongodb</a>
+            <a href="/tags/https/" rel="tag"># https</a>
           
         </div>
       
@@ -472,8 +468,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/30/服务器迁移到centos/" rel="next" title="服务器迁移到centos">
-                <i class="fa fa-chevron-left"></i> 服务器迁移到centos
+              <a href="/2018/12/12/进击的三方登录/" rel="next" title="进击的三方登录">
+                <i class="fa fa-chevron-left"></i> 进击的三方登录
               </a>
             
           </div>
@@ -481,10 +477,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/21/免密码登录/" rel="prev" title="免密码登录">
-                免密码登录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
