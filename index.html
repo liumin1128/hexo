@@ -331,6 +331,193 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/21/详解AMD、CommonJS和UMD模块化规范/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liumin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="本王今年八岁的blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/21/详解AMD、CommonJS和UMD模块化规范/" class="post-title-link" itemprop="http://liumin.me/index.html">详解AMD、CommonJS和UMD模块化规范</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-21 16:27:00 / Modified: 16:38:19" itemprop="dateCreated datePublished" datetime="2019-03-21T16:27:00+08:00">2019-03-21</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="AMD、CommonJS和UMD模块化规范"><a href="#AMD、CommonJS和UMD模块化规范" class="headerlink" title="AMD、CommonJS和UMD模块化规范"></a>AMD、CommonJS和UMD模块化规范</h1><h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>CommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。</p>
+<p><strong>基本原理</strong></p>
+<p>实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。</p>
+<p><strong>语法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const $ = require(&apos;jquery&apos;); //将依赖加载到当前文件</span><br><span class="line">exports.init = function()&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>特点</strong></p>
+<ul>
+<li>没有回调函数</li>
+<li>同步加载，每个require语句会短暂阻塞代码的运行，知道模块加载完毕。不过这个加载不是通过网络加载，而是从内存或者文件系统中加载，所以这个过程很快。</li>
+<li>代码简单易懂</li>
+<li>CommonJS模块不适合浏览器，因为浏览器的加载机制不支持同步。需要用打包工具把所有CommonJS模块打包成一个js文件。</li>
+</ul>
+<h2 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h2><p>AMD：Asynchronous Module Definition（异步模块规范），最老的方式之一，专为浏览器而设计。</p>
+<p><strong>基本原理</strong></p>
+<p>用异步加载技术来定义模块和依赖。提供define方法和require方法来定义和加载模块。</p>
+<p><strong>语法</strong></p>
+<p>define方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">define(</span><br><span class="line">    &apos;模块id&apos;,</span><br><span class="line">    [&apos;依赖数组&apos;]，</span><br><span class="line">    function([依赖数组])&#123; //工厂函数</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>工厂函数内部包含了模块代码，工厂函数最后返回的结果，就是要暴露给其他模块的功能。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>用AMD定义的模块至少需要一个工厂函数来暴露API给其他模块使用。</li>
+<li>依赖数组中的依赖会被异步加载。</li>
+<li>模块的加载通过客户端（浏览器）向服务器发送HTTP请求来完成的，这个传输过程需要大量时间。</li>
+<li>可以定义具名模块，也可以定义匿名模块。具名模块通过开发者定义的名字加载，匿名模块隐式的以文件名加载。</li>
+</ul>
+<p>require方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require([&apos;jquery&apos;]，</span><br><span class="line">    function($)&#123; //回调函数</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>require方法与define方法相对应，用来显示的加载模块。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>可以在代码的任何地方使用require加载另一个模块。</li>
+<li>require调用会发送一个请求来下载模块。</li>
+<li>异步加载，只有在回调函数里才能获取新拿到的API。</li>
+</ul>
+<p>AMD模块加载流程示意图<br><img src="media/15531572931570.jpg" alt=""></p>
+<h2 id="UMD"><a href="#UMD" class="headerlink" title="UMD"></a>UMD</h2><p>UMD：Universal Module Definition（通用模块规范）是由社区想出来的一种整合了CommonJS和AMD两个模块定义规范的方法。</p>
+<p><strong>基本原理</strong></p>
+<p>用一个工厂函数来统一不同的模块定义规范。</p>
+<p><strong>原则</strong></p>
+<ul>
+<li>所有定义模块的方法需要单独传入依赖</li>
+<li>所有定义模块的方法都需要返回一个对象，供其他模块使用</li>
+</ul>
+<p>例如，利用UMD定义一个toggler模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(function (global, factory) &#123;</span><br><span class="line">    if (typeof exports === &apos;object&apos; &amp;&amp; typeof module !== undefined) &#123; //检查CommonJS是否可用</span><br><span class="line">        module.exports = factory(require(&apos;jquery&apos;));</span><br><span class="line">    &#125; else if (typeof define === &apos;function&apos; &amp;&amp; define.amd) &#123;      //检查AMD是否可用</span><br><span class="line">        define(&apos;toggler&apos;, [&apos;jquery&apos;, factory])</span><br><span class="line">    &#125; else &#123;       //两种都不能用，把模块添加到JavaScript的全局命名空间中。</span><br><span class="line">        global.toggler = factory(global, factory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(this, function ($) &#123;</span><br><span class="line">    function init() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return &#123;</span><br><span class="line">        init: init</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>原文：<a href="https://blog.csdn.net/weixin_40817115/article/details/81229337" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40817115/article/details/81229337</a> </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/12/13/使用acme-sh轻松配置泛域名https证书/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1586,7 +1773,7 @@ ps：前期会有较多废（xin）话（de）。
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1640,7 +1827,9 @@ ps：前期会有较多废（xin）话（de）。
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1679,7 +1868,7 @@ ps：前期会有较多废（xin）话（de）。
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
