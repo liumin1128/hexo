@@ -108,19 +108,19 @@
 
 
 
-  <meta name="description" content="AMD、CommonJS和UMD模块化规范CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;">
+  <meta name="description" content="CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;); //将依赖加载到当前文件export">
 <meta name="keywords" content="js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="详解AMD、CommonJS和UMD模块化规范">
 <meta property="og:url" content="http://liumin.me/2019/03/21/详解AMD、CommonJS和UMD模块化规范/index.html">
 <meta property="og:site_name" content="本王今年八岁的blog">
-<meta property="og:description" content="AMD、CommonJS和UMD模块化规范CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;">
+<meta property="og:description" content="CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;); //将依赖加载到当前文件export">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://liumin.me/2019/03/21/详解AMD、CommonJS和UMD模块化规范/media/15531572931570.jpg">
-<meta property="og:updated_time" content="2019-03-21T08:38:19.010Z">
+<meta property="og:updated_time" content="2019-03-22T03:15:03.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="详解AMD、CommonJS和UMD模块化规范">
-<meta name="twitter:description" content="AMD、CommonJS和UMD模块化规范CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;">
+<meta name="twitter:description" content="CommonJSCommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。 基本原理 实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。 语法 1234const $ = require(&amp;apos;jquery&amp;apos;); //将依赖加载到当前文件export">
 <meta name="twitter:image" content="http://liumin.me/2019/03/21/详解AMD、CommonJS和UMD模块化规范/media/15531572931570.jpg">
 
 
@@ -379,12 +379,24 @@
                 
               
 
-              <time title="Created: 2019-03-21 16:27:00 / Modified: 16:38:19" itemprop="dateCreated datePublished" datetime="2019-03-21T16:27:00+08:00">2019-03-21</time>
+              <time title="Created: 2019-03-21 16:27:00" itemprop="dateCreated datePublished" datetime="2019-03-21T16:27:00+08:00">2019-03-21</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-22 11:15:03" itemprop="dateModified" datetime="2019-03-22T11:15:03+08:00">2019-03-22</time>
               
             
           </span>
@@ -417,7 +429,7 @@
       
 
       
-        <h1 id="AMD、CommonJS和UMD模块化规范"><a href="#AMD、CommonJS和UMD模块化规范" class="headerlink" title="AMD、CommonJS和UMD模块化规范"></a>AMD、CommonJS和UMD模块化规范</h1><h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>CommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。</p>
+        <h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>CommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。</p>
 <p><strong>基本原理</strong></p>
 <p>实现编译代码，创建一个比原先更大的代码包，其中包含了所有应用运行所需的代码。</p>
 <p><strong>语法</strong></p>
@@ -509,6 +521,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/03/22/动态加载资源文件/" rel="prev" title="dynamic-file 动态加载资源文件">
+                dynamic-file 动态加载资源文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -577,7 +593,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -668,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AMD、CommonJS和UMD模块化规范"><span class="nav-number">1.</span> <span class="nav-text">AMD、CommonJS和UMD模块化规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CommonJS"><span class="nav-number">1.1.</span> <span class="nav-text">CommonJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMD"><span class="nav-number">1.2.</span> <span class="nav-text">AMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UMD"><span class="nav-number">1.3.</span> <span class="nav-text">UMD</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CommonJS"><span class="nav-number">1.</span> <span class="nav-text">CommonJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMD"><span class="nav-number">2.</span> <span class="nav-text">AMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UMD"><span class="nav-number">3.</span> <span class="nav-text">UMD</span></a></li></ol></div>
             
 
           </div>
