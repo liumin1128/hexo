@@ -4,8 +4,6 @@ date: 2019-03-21 16:27:00
 tags: js
 ---
 
-# AMD、CommonJS和UMD模块化规范
-
 ## CommonJS
 
 CommonJS模块可以说是当前最流行的模块定义规范。相比于AMD，它的工作效率更高、语法更简单。一开始，CommonJS模块是JavaScript服务器模块的规范。
