@@ -331,6 +331,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/25/优雅的redux异步中间件redux-effect/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liumin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="本王今年八岁的blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/25/优雅的redux异步中间件redux-effect/" class="post-title-link" itemprop="http://liumin.me/index.html">优雅的redux异步中间件redux-effect</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-25 18:14:19 / Modified: 18:15:44" itemprop="dateCreated datePublished" datetime="2019-03-25T18:14:19+08:00">2019-03-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Github: <a href="https://github.com/liumin1128/redux-effect" target="_blank" rel="noopener">https://github.com/liumin1128/redux-effect</a></p>
+<p>基于redux、async/await、无侵入、兼容性良好的异步状态管理器。</p>
+<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm i -S redux-effect</span><br><span class="line"></span><br><span class="line">// or</span><br><span class="line">yarn add redux-effect</span><br></pre></td></tr></table></figure>
+<h2 id="use"><a href="#use" class="headerlink" title="use"></a>use</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createStore, applyMiddleware, combineReducers &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; reduxReduers, reduxEffects &#125; <span class="keyword">from</span> <span class="string">'redux-effect'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> models = [ test1, test2, ...];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reducers = combineReducers(reduxReduers(models));</span><br><span class="line"><span class="keyword">const</span> middlewares = [ reduxEffects(models) ];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore(</span><br><span class="line">    reducers,</span><br><span class="line">    initialState,</span><br><span class="line">    middlewares</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+<p>从代码可以看出，从reduxReduers, reduxEffects中得到的就是标准的reducer和middleware，完美兼容其他redux插件，也可以轻松整合进老项目中。</p>
+<p>完整例子：<a href="example/src/store.js">example</a></p>
+<h2 id="model"><a href="#model" class="headerlink" title="model"></a>model</h2><p>在redux-effect中，没有action的概念，也不需要定义action type。</p>
+<p>所有关于某个state的一切声明在一个model中，本质就是一个对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  namespace: <span class="string">'test'</span>,</span><br><span class="line">  state: &#123; <span class="attr">text</span>: <span class="string">'hi!'</span> &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    save: <span class="function">(<span class="params">state, &#123; payload &#125;</span>) =&gt;</span> (&#123; ...state, ...payload &#125;),</span><br><span class="line">    clear: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;&#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  effects: &#123;</span><br><span class="line">    fetch: <span class="keyword">async</span> (&#123; getState,dispatch &#125;, &#123; payload &#125;) =&gt; &#123;</span><br><span class="line">      <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">      <span class="keyword">await</span> dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/clear'</span> &#125;);</span><br><span class="line">      <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">      <span class="keyword">await</span> dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/save'</span>, <span class="attr">payload</span>: &#123; <span class="attr">text</span>: <span class="string">'hello world'</span> &#125; &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>namespace：</strong></p>
+<p>model的命名空间，对应state的名字，必填，只接受一个字符串。</p>
+<p><strong>state：</strong></p>
+<p>state的初始值，非必填，默认为空对象</p>
+<p><strong>reducers：</strong></p>
+<p>必填，相当于同步执行的action方法，接受两个参数state和action，合并后返回新的state状态值。</p>
+<p><strong>effects：</strong></p>
+<p>非必填，相当于异步执行的action方法，接受两个参数store和action，store里包括redux自带的getState和dispatch方法，action为用户dispatch时带的参数。</p>
+<h2 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch"></a>dispatch</h2><p>这里的dispatch就是redux中的dispatch，但有几个约定。</p>
+<ol>
+<li>不传定义好的action，而是直接传一个普通对象。</li>
+<li>type的组织形式：namespace + ‘/‘ + reducer或effect方法名</li>
+<li>参数的传递：需要合并的参数用payload包裹</li>
+</ol>
+<p>定义每一个action，并将其绑定到视图层过于繁琐，去action化则让事件的触发变的灵活。</p>
+<p><strong>普通事件</strong></p>
+<p>发送事件时，不区分同步还是异步，只管dispatch，一切都已在model中定义好。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 同步</span></span><br><span class="line">dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/save'</span>, <span class="attr">payload</span>: &#123; <span class="attr">text</span>: <span class="string">"hello world"</span> &#125; &#125;)</span><br><span class="line"><span class="comment">// 异步</span></span><br><span class="line">dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/fetch'</span> &#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>等待</strong></p>
+<p>等待一个事件完成再执行逻辑，dispatch方法是可以被await的，十分轻松。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">await</span> dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/fetch'</span> &#125;)</span><br><span class="line">  <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">'hello world'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>回调</strong></p>
+<p>等待某个事件，再执行外部定义的某个回调函数，只需要在action字段里加上callback方法，在effect中调用即可。</p>
+<p>相比较await，回调可以拿到某些返回值，也可以在effect流程的中间部分执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">dispatch(&#123; <span class="attr">type</span>: <span class="string">'test/fetch'</span>, callback1, callback2 &#125;)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  effects: &#123;</span><br><span class="line">    fetch: <span class="keyword">async</span> (&#123; getState,dispatch &#125;, &#123; payload, callback, callback2 &#125;) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> state = <span class="keyword">await</span> getState()</span><br><span class="line">      <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">      <span class="keyword">await</span> callback1(state)</span><br><span class="line">      <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">      <span class="keyword">await</span> callback2(state)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>自定义reducer</strong></p>
+<p>reducer其实就是redux中的reducer，用法完全一样。比如定义一个push方法，将后续数据，压入到原有数据后面，可以这样写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">  namespace: &apos;test&apos;,</span><br><span class="line">  state: &#123; data: [] &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    save: (state, &#123; payload &#125;) =&gt; (&#123; ...state, ...payload &#125;),</span><br><span class="line">    clear: () =&gt; (&#123;&#125;),</span><br><span class="line">    push: (state, &#123; payload = &#123;&#125; &#125;) =&gt; &#123;</span><br><span class="line">      const &#123; key = &apos;data&apos;, data &#125; = payload;</span><br><span class="line">      return &#123; ...state, [key]: state[key].concat(data) &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>自定义effect</strong></p>
+<p>effect其实就是一个普通async函数，接受store和action两个参数，可以使用async/await，可以执行任意异步方法，可以随时拿到state的值，可以dispatch触发另一个effect或者reducer。</p>
+<h2 id="loading"><a href="#loading" class="headerlink" title="loading"></a>loading</h2><p>  也许你会想监听某个effect，拿到loading状态，以便在ui给用户一个反馈。一般情况下监听一个异步方法，只需要在effect的开头和结束，各自设定状态即可，与常规写法无异。</p>
+<p>  但这里也提供一种model级别的loading状态，新增一个名为loading的model，再使用reduxEffectsWithLoading包裹需要监听的model即可。</p>
+<h2 id="关于model-creator"><a href="#关于model-creator" class="headerlink" title="关于model-creator"></a>关于model-creator</h2><p>以上所做的事情，是将redux核心规范为model，得到了统一且可以复用的数据模型，这为自动生成model创造了可能性，如果能通过工厂模式，自动化创建具有类似功能，且可以随意装配的model，一切将变得更加美好。</p>
+<p>Coming Soon</p>
+<!-- 了解更多请移步：[redux-model-creator](https://github.com/liumin1128/redux-model-creator) -->
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/动态加载资源文件/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1935,7 +2120,7 @@ ps：前期会有较多废（xin）话（de）。
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1991,7 +2176,11 @@ ps：前期会有较多废（xin）话（de）。
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
