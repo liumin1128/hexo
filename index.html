@@ -376,7 +376,7 @@
                 
               
 
-              <time title="Created: 2019-03-25 18:14:19 / Modified: 18:15:44" itemprop="dateCreated datePublished" datetime="2019-03-25T18:14:19+08:00">2019-03-25</time>
+              <time title="Created: 2019-03-25 18:14:19 / Modified: 18:16:43" itemprop="dateCreated datePublished" datetime="2019-03-25T18:14:19+08:00">2019-03-25</time>
             
 
             
@@ -416,7 +416,10 @@
       
         
           
-            <p>Github: <a href="https://github.com/liumin1128/redux-effect" target="_blank" rel="noopener">https://github.com/liumin1128/redux-effect</a></p>
+            <blockquote>
+<p>不吹不黑，redux蛮好用。只是有时略显繁琐，叫我定义每一个action、action type、使用时还要在组件上绑定一遍，臣妾做不到呀！下面分享一种个人比较倾向的极简写法，仍有待完善，望讨论。</p>
+</blockquote>
+<p>Github: <a href="https://github.com/liumin1128/redux-effect" target="_blank" rel="noopener">https://github.com/liumin1128/redux-effect</a></p>
 <p>基于redux、async/await、无侵入、兼容性良好的异步状态管理器。</p>
 <h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm i -S redux-effect</span><br><span class="line"></span><br><span class="line">// or</span><br><span class="line">yarn add redux-effect</span><br></pre></td></tr></table></figure>
 <h2 id="use"><a href="#use" class="headerlink" title="use"></a>use</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createStore, applyMiddleware, combineReducers &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; reduxReduers, reduxEffects &#125; <span class="keyword">from</span> <span class="string">'redux-effect'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> models = [ test1, test2, ...];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reducers = combineReducers(reduxReduers(models));</span><br><span class="line"><span class="keyword">const</span> middlewares = [ reduxEffects(models) ];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore(</span><br><span class="line">    reducers,</span><br><span class="line">    initialState,</span><br><span class="line">    middlewares</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
