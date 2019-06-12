@@ -4,6 +4,8 @@ date: 2019-03-25 18:14:19
 tags: [redux, react]
 ---
 
+> 不吹不黑，redux蛮好用。只是有时略显繁琐，叫我定义每一个action、action type、使用时还要在组件上绑定一遍，臣妾做不到呀！下面分享一种个人比较倾向的极简写法，仍有待完善，望讨论。
+
 Github: https://github.com/liumin1128/redux-effect
 
 基于redux、async/await、无侵入、兼容性良好的异步状态管理器。
