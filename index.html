@@ -331,6 +331,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/06/12/一个jo厨程序员是如何看漫画的/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liumin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="本王今年八岁的blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/06/12/一个jo厨程序员是如何看漫画的/" class="post-title-link" itemprop="http://liumin.me/index.html">一个jo厨程序员是如何看漫画的</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-06-12 13:19:16 / Modified: 13:37:02" itemprop="dateCreated datePublished" datetime="2019-06-12T13:19:16+08:00">2019-06-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="https://imgs.react.mobi/Fi91glDZEi4JBsyIWiX9Jlr0y3xD" alt=""></p>
+<p>追完动画，刚见到波波，战车这是咋了，啥是镇魂曲啊，怎么就完了，要等周六啊啊啊啊啊啊啊，act3附体，小嘴就像抹了蜜……</p>
+<p>ヽ(。&gt;д&lt;)ｐ</p>
+<p>于是想到看漫画版，但网页体验较差，一次只能看一页，一页只有一张图，还不能存缓。</p>
+<p>╮(╯_╰)╭</p>
+<p>行吧，没缓存，我自己做。</p>
+<p>大致看了下该页面的结构，做的不错，结构清晰、代码整洁、可读性好，那爬取就很方便了。</p>
+<h3 id="初步想法"><a href="#初步想法" class="headerlink" title="初步想法"></a>初步想法</h3><p>明确下目标，需要的是任意一本漫画的全部内容，也就是图片src列表，然后批量下载到本地。没想过要爬整站（我是良民），入口就设为漫画的详情页好了，目测需要如下几个步骤：</p>
+<p>编号 =&gt; 基本信息 =&gt; 章节列表 =&gt; 页列表 =&gt; 图片地址</p>
+<p>个人比较熟悉node，插件应有尽有，写起来比较顺手，实现如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据编号获取url地址</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getIndexUrl</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> url = <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>/manhua/`</span>;</span><br><span class="line">  <span class="keyword">if</span> (number) url += number;</span><br><span class="line">  <span class="keyword">return</span> url;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取漫画基本信息和章节目录</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> html = <span class="keyword">await</span> fetch(url).then(<span class="function"><span class="params">res</span> =&gt;</span> res.text());</span><br><span class="line">  <span class="keyword">const</span> $ = cheerio.load(html, &#123; <span class="attr">decodeEntities</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//   获取title</span></span><br><span class="line">  <span class="keyword">const</span> title = <span class="keyword">await</span> $(<span class="string">'h1.comic-title'</span>).text();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//   获取简介</span></span><br><span class="line">  <span class="keyword">const</span> description = <span class="keyword">await</span> $(<span class="string">'p.comic_story'</span>).text();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//   获取creators</span></span><br><span class="line">  <span class="keyword">const</span> creators = [];</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getCreators</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    creators.push($(<span class="keyword">this</span>).find(<span class="string">'a'</span>).text());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">await</span> $(<span class="string">'.creators'</span>).find(<span class="string">'li'</span>).map(getCreators);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//   获取卷</span></span><br><span class="line">  <span class="keyword">const</span> list = [];</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getVlue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> href = <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span><span class="subst">$&#123;$(<span class="keyword">this</span>).find(<span class="string">'a'</span>).attr(<span class="string">'href'</span>)&#125;</span>`</span>;</span><br><span class="line">    list.push(&#123;</span><br><span class="line">      href,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">await</span> $(<span class="string">'.active .links-of-books.num_div'</span>).find(<span class="string">'li.sort_div'</span>).map(getVlue);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  获取数据</span></span><br><span class="line">  <span class="keyword">const</span> data = [];</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getComicData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> key = $(<span class="keyword">this</span>).find(<span class="string">'td'</span>).attr(<span class="string">'class'</span>) || $(<span class="keyword">this</span>).find(<span class="string">'td a'</span>).attr(<span class="string">'class'</span>);</span><br><span class="line">    <span class="keyword">const</span> value = key === <span class="string">'comic-cover'</span> ? $(<span class="keyword">this</span>).find(<span class="string">'td img'</span>).attr(<span class="string">'src'</span>) : $(<span class="keyword">this</span>).find(<span class="string">'td'</span>).text();</span><br><span class="line">    <span class="keyword">const</span> label = $(<span class="keyword">this</span>).find(<span class="string">'th'</span>).text();</span><br><span class="line">    data.push(&#123;</span><br><span class="line">      key,</span><br><span class="line">      label,</span><br><span class="line">      value,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">await</span> $(<span class="string">'.table.table-striped.comic-meta-data-table'</span>).find(<span class="string">'tr'</span>).map(getComicData);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> detail = <span class="keyword">await</span> $(<span class="string">'article.comic-detail-section'</span>).html();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    title,</span><br><span class="line">    creators,</span><br><span class="line">    description,</span><br><span class="line">    list,</span><br><span class="line">    data,</span><br><span class="line">    detail,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取章节内全部页</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getPageList</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> html = <span class="keyword">await</span> fetch(url).then(<span class="function"><span class="params">res</span> =&gt;</span> res.text());</span><br><span class="line">  <span class="keyword">const</span> $ = cheerio.load(html, &#123; <span class="attr">decodeEntities</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> list = [];</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getPage2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    list.push(<span class="string">`<span class="subst">$&#123;baseUrl&#125;</span><span class="subst">$&#123;$(<span class="keyword">this</span>).attr(<span class="string">'value'</span>)&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">await</span> $(<span class="string">'select.form-control'</span>).eq(<span class="number">0</span>).find(<span class="string">'option'</span>).map(getPage2);</span><br><span class="line">  <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取页内图片地址</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getPage</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> html = <span class="keyword">await</span> fetch(url).then(<span class="function"><span class="params">res</span> =&gt;</span> res.text());</span><br><span class="line">  <span class="keyword">const</span> $ = cheerio.load(html, &#123; <span class="attr">decodeEntities</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> src = <span class="keyword">await</span> $(<span class="string">'img.img-fluid'</span>).attr(<span class="string">'src'</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span><span class="subst">$&#123;src&#125;</span>`</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先将写好的步骤组合起来：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> indexUrl = <span class="keyword">await</span> getIndexUrl(number);</span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> getData(indexUrl);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="built_in">Promise</span>.all(data.list.map(<span class="keyword">async</span> (i, idx) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> pageList = <span class="keyword">await</span> getPageList(i.href);</span><br><span class="line">    <span class="keyword">const</span> imgs = [];</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">Promise</span>.all(pageList.map(<span class="keyword">async</span> (pages, pdx) =&gt; &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="built_in">Promise</span>.all(pages.map(<span class="keyword">async</span> (j, jdx) =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> src = <span class="keyword">await</span> getPage(j);</span><br><span class="line">        imgs.push(src);</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;));</span><br><span class="line">  &#125;));</span><br><span class="line"></span><br><span class="line">  fs.writeFileSync(<span class="string">`../jojo/<span class="subst">$&#123;number&#125;</span>.json`</span>, <span class="built_in">JSON</span>.stringify(data));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>嗯，很简单嘛。就是看起来太暴力了，这样不好，别给人服务器太大压力。</p>
+<h3 id="串行promise"><a href="#串行promise" class="headerlink" title="串行promise"></a>串行promise</h3><p>实现类似Promise.all，但不同点在于，如果是数组直接返回promise，众所周知promise在创建时就已经执行了，不可能串行。于是将数组改写，返回一个可执行函数的队列，在串行方法里去执行，这样就可以实现了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">sequence</span>(<span class="params">promises</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> result = [];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">callBack</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> promises[i]().then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        i += <span class="number">1</span>;</span><br><span class="line">        result.push(res);</span><br><span class="line">        <span class="keyword">if</span> (i === promises.length) &#123;</span><br><span class="line">          resolve(result);</span><br><span class="line">        &#125;</span><br><span class="line">        callBack();</span><br><span class="line">      &#125;).catch(reject);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> callBack();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用方法</span></span><br><span class="line">sequence([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].map(<span class="function"><span class="params">number</span> =&gt;</span> () =&gt; <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`$<span class="subst">$&#123;number&#125;</span>`</span>);</span><br><span class="line">    resolve(number);</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;))).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'成功'</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'失败'</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="分组并发"><a href="#分组并发" class="headerlink" title="分组并发"></a>分组并发</h3><p>完全串行的话，和正常逐步浏览网页没什么区别，性能是没问题了，但那有什么意义，我们得加快速度。于是想到将200页分组，每10个一组，每组串行执行，组内并行执行，相当于10个用户同时访问网站，这总不可能扛不住吧，如此应该能兼顾效率和性能。</p>
+<p>分组就没必要自己写了，使用lodash/chunk和Promise.all即可。</p>
+<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>考虑到爬取一个章节，至少都是200页，还是并行的，不敢保证中途不出任何意外，基本的异常处理还是要做的。</p>
+<p>赶时间，直接将利用race来实现，只要没有结果，一律重试，实践起来还是比较稳的。</p>
+<h3 id="完整的爬取方法"><a href="#完整的爬取方法" class="headerlink" title="完整的爬取方法"></a>完整的爬取方法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> indexUrl = <span class="keyword">await</span> getIndexUrl(number);</span><br><span class="line">    <span class="keyword">const</span> data = <span class="keyword">await</span> getData(indexUrl);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> sequence(data.list.map(<span class="function">(<span class="params">i, idx</span>) =&gt;</span> <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="built_in">Math</span>.random() * <span class="number">1000</span>);</span><br><span class="line">    <span class="keyword">let</span> pageList = <span class="keyword">await</span> getPageList(i.href);</span><br><span class="line"></span><br><span class="line">    pageList = pageList</span><br><span class="line">        .map(<span class="function"><span class="params">src</span> =&gt;</span> (&#123; src, <span class="attr">index</span>: <span class="built_in">parseInt</span>(src.substr(<span class="number">42</span>, <span class="number">3</span>).replace(<span class="string">'_'</span>, <span class="string">''</span>), <span class="number">0</span>) &#125;))</span><br><span class="line">        .sort(<span class="function">(<span class="params">x, y</span>) =&gt;</span> x.index - y.index)</span><br><span class="line">        .map(<span class="function">(<span class="params">&#123; src &#125;</span>) =&gt;</span> src);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> imgs = [];</span><br><span class="line">    <span class="keyword">const</span> len = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分len一组，串行访问</span></span><br><span class="line">    <span class="keyword">await</span> sequence(chunk(pageList, len).map(<span class="function">(<span class="params">pages, pdx</span>) =&gt;</span> <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">await</span> sleep(<span class="built_in">Math</span>.random() * <span class="number">5000</span>);</span><br><span class="line">        <span class="comment">// 以len一组，并行访问</span></span><br><span class="line">        <span class="keyword">await</span> <span class="built_in">Promise</span>.all(pages.map(<span class="keyword">async</span> (j, jdx) =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> src;</span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">race</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">await</span> sleep(<span class="built_in">Math</span>.random() * <span class="number">1000</span>);</span><br><span class="line">            <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="built_in">Promise</span>.race([ getPage(j), sleep(<span class="number">5000</span>) ]);</span><br><span class="line">            <span class="keyword">if</span> (res) &#123;</span><br><span class="line">            src = res;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`拿到src: <span class="subst">$&#123;src&#125;</span>`</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'重新加入队列'</span>);</span><br><span class="line">            <span class="keyword">await</span> race();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">await</span> race();</span><br><span class="line">        imgs.push(src);</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;));</span><br><span class="line"></span><br><span class="line">    data.list[idx].list = imgs</span><br><span class="line">        .map(<span class="function"><span class="params">src</span> =&gt;</span> (&#123; src, <span class="attr">index</span>: <span class="built_in">parseInt</span>(src.substr(<span class="number">42</span>, <span class="number">3</span>).replace(<span class="string">'_'</span>, <span class="string">''</span>), <span class="number">0</span>) &#125;))</span><br><span class="line">        .sort(<span class="function">(<span class="params">x, y</span>) =&gt;</span> x.index - y.index)</span><br><span class="line">        .map(<span class="function">(<span class="params">&#123; src &#125;</span>) =&gt;</span> src);</span><br><span class="line">    &#125;));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'爬取成功！！！'</span>);</span><br><span class="line"></span><br><span class="line">    fs.writeFileSync(<span class="string">`../jojo/<span class="subst">$&#123;number&#125;</span>.json`</span>, <span class="built_in">JSON</span>.stringify(data));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="批量下载"><a href="#批量下载" class="headerlink" title="批量下载"></a>批量下载</h3><p>以上，已经拿到了所需的全部信息。</p>
+<p>接下来只需要批量下载即可，这好办，先整一个promise化的下载方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">downloadFile</span>(<span class="params">url, filepath</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 块方式写入文件</span></span><br><span class="line">    <span class="keyword">const</span> ws = fs.createWriteStream(filepath);</span><br><span class="line">    ws.on(<span class="string">'open'</span>, () =&gt; &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'下载：'</span>, url, filepath);</span><br><span class="line">    &#125;);</span><br><span class="line">    ws.on(<span class="string">'error'</span>, (err) =&gt; &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'出错：'</span>, url, filepath);</span><br><span class="line">      reject(err);</span><br><span class="line">    &#125;);</span><br><span class="line">    ws.on(<span class="string">'finish'</span>, () =&gt; &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'完成：'</span>, url, filepath);</span><br><span class="line">      resolve(<span class="literal">true</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    request(url).pipe(ws);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再如法炮制一套串行并行混合的下载规则：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">readJson</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="comment">//   await checkPath('../jojo');</span></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> readFile(<span class="string">'../jojo/128.json'</span>);</span><br><span class="line">  <span class="keyword">const</span> json = <span class="built_in">JSON</span>.parse(data);</span><br><span class="line">  <span class="built_in">console</span>.log(json.list[<span class="number">0</span>].list.length);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> cur = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">await</span> sequence(json.list.map(<span class="function">(<span class="params">list, idx</span>) =&gt;</span> <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> sequence(chunk(list.list, cur).map(<span class="function">(<span class="params">pages, pdx</span>) =&gt;</span> <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">await</span> sleep(<span class="built_in">Math</span>.random() * <span class="number">1000</span>);</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'正在获取:'</span>, <span class="string">`/jojo/<span class="subst">$&#123;idx + <span class="number">1</span>&#125;</span>/`</span>, <span class="string">` 第<span class="subst">$&#123;pdx + <span class="number">1</span>&#125;</span>批`</span>);</span><br><span class="line">      <span class="keyword">await</span> <span class="built_in">Promise</span>.all(pages.map(<span class="keyword">async</span> (j, jdx) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> dirpath = <span class="string">`../jojo/<span class="subst">$&#123;idx + <span class="number">1</span>&#125;</span>`</span>;</span><br><span class="line">        <span class="keyword">const</span> filepath = <span class="string">`../jojo/<span class="subst">$&#123;idx + <span class="number">1</span>&#125;</span>/<span class="subst">$&#123;cur * pdx + jdx + <span class="number">1</span>&#125;</span>.jpg`</span>;</span><br><span class="line">        <span class="keyword">await</span> checkPath(dirpath);</span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">race</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">await</span> sleep(<span class="built_in">Math</span>.random() * <span class="number">1000</span>);</span><br><span class="line">          <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="built_in">Promise</span>.race([</span><br><span class="line">            downloadFile(j, filepath),</span><br><span class="line">            sleep(<span class="number">20000</span>),</span><br><span class="line">          ]);</span><br><span class="line">          <span class="keyword">if</span> (res) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'下载成功'</span>);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'重新加入队列'</span>);</span><br><span class="line">            <span class="keyword">await</span> race();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">await</span> race();</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;));</span><br><span class="line">  &#125;));</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'获取成功'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尝试一下，问题不大，图片会按章节下载到对应目录，速度比自己翻快多了，目标达成！</p>
+<p><img src="https://imgs.react.mobi/FpwOqDEBfMEg_FMIzmYL05yk-oVc" alt=""></p>
+<p>折腾了几个小时，终于又可以愉快地在ipad上看漫画咯，我真是嗨到不行了~</p>
+<p>[]~(￣▽￣)~*   (～￣▽￣)～</p>
+<p>完整代码：<a href="https://github.com/liumin1128/api.react.mobi/blob/master/server/crawler/jojo.js" target="_blank" rel="noopener">https://github.com/liumin1128/api.react.mobi/blob/master/server/crawler/jojo.js</a>。</p>
+<p>PS1：仅供学习，请在24小时内删除。<br>PS2：有机会请支持正版。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/25/优雅的redux异步中间件redux-effect/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1889,200 +2062,13 @@ ps：前期会有较多废（xin）话（de）。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/01/05/轻松驾驭https/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liumin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="本王今年八岁的blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/01/05/轻松驾驭https/" class="post-title-link" itemprop="http://liumin.me/index.html">轻松驾驭https</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-01-05 00:20:21" itemprop="dateCreated datePublished" datetime="2018-01-05T00:20:21+08:00">2018-01-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-11-21 15:04:51" itemprop="dateModified" datetime="2018-11-21T15:04:51+08:00">2018-11-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="创建-Let’s-Encrypt-账号"><a href="#创建-Let’s-Encrypt-账号" class="headerlink" title="创建 Let’s Encrypt 账号"></a>创建 Let’s Encrypt 账号</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa 4096 &gt; account.key</span><br></pre></td></tr></table></figure>
-<p>#创建普通域名私钥</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa 4096 &gt; domain.key</span><br></pre></td></tr></table></figure>
-<p>#单个域名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -sha256 -key domain.key -subj &quot;/CN=foofish.net&quot; &gt; domain.csr</span><br></pre></td></tr></table></figure>
-<p>#多个域名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -sha256 -key domain.key -subj &quot;/&quot; -reqexts SAN -config &lt;(cat /etc/pki/tls/openssl.cnf &lt;(printf &quot;[SAN]\nsubjectAltName=DNS:liumin.me,DNS:www.liumin.me,DNS:react.mobi,DNS:www.react.mobi,DNS:api.react.mobi&quot;)) &gt; domain.csr</span><br></pre></td></tr></table></figure>
-<p>#如果出错，你可能需要查找openssl.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / | grep &quot;.*openssl.*&quot;</span><br></pre></td></tr></table></figure>
-<h1 id="配置nginx，以后还会用到"><a href="#配置nginx，以后还会用到" class="headerlink" title="配置nginx，以后还会用到"></a>配置nginx，以后还会用到</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name www.liumin.me liumin.me api.react.mobi www.react.mobi react.mobi;</span><br><span class="line">    location ^~ /.well-known/acme-challenge/ &#123;</span><br><span class="line">        alias /var/www/challenges/;</span><br><span class="line">        try_files $uri =404;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>#生成证书</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem &gt; intermediate.pem</span><br><span class="line">cat signed.crt intermediate.pem &gt; chained.pem</span><br></pre></td></tr></table></figure>
-<p>#编写脚本以自动运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/sh</span><br><span class="line">python /var/www/challenges/acme_tiny.py --account-key /var/www/challenges/account.key --csr /var/www/challenges/domain.csr --acme-dir /var/www/challenges/ &gt; /tmp/signed.crt || exit</span><br><span class="line">wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem &gt; intermediate.pem</span><br><span class="line">cat /tmp/signed.crt intermediate.pem &gt; /var/www/challenges/chained.pem</span><br><span class="line">service nginx reload</span><br></pre></td></tr></table></figure>
-<p>#验证任务是否正常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh ./renew_cert.sh</span><br></pre></td></tr></table></figure>
-<p>#添加定时任务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 1 * * /var/www/challenges/renew_cert.sh 2&gt;&gt; /var/www/challenges/acme_tiny.log</span><br><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
-<p>#完整nginx配置，http自动转https</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name liumin.me www.liumin.me api.react.mobi www.react.mobi react.mobi;</span><br><span class="line">    location ^~ /.well-known/acme-challenge/ &#123;</span><br><span class="line">        alias /var/www/challenges/;</span><br><span class="line">        try_files $uri =404;</span><br><span class="line">    &#125;</span><br><span class="line">    location / &#123;</span><br><span class="line">        rewrite ^(.*)$ https://$host$1 last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443;</span><br><span class="line">    server_name www.react.mobi, react.mobi;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3102;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate /var/www/challenges/chained.pem;</span><br><span class="line">    ssl_certificate_key /var/www/challenges/domain.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;</span><br><span class="line">    ssl_session_cache shared:SSL:50m;</span><br><span class="line">    # ssl_dhparam /var/www/challenges/server.dhparam;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443;</span><br><span class="line">    server_name api.react.mobi;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3101;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate /var/www/challenges/chained.pem;</span><br><span class="line">    ssl_certificate_key /var/www/challenges/domain.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;</span><br><span class="line">    ssl_session_cache shared:SSL:50m;</span><br><span class="line">    # ssl_dhparam /var/www/challenges/server.dhparam;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2123,7 +2109,7 @@ ps：前期会有较多废（xin）话（de）。
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
