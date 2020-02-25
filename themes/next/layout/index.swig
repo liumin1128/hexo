@@ -11,10 +11,9 @@
 
 {% block content %}
 
-  <script type="text/javascript" async src="https://www.recaptcha.net/recaptcha/api.js?render=6Lek7NsUAAAAAJXDWigJdnrQhek6oJRYLfS3J5mq"></script>
-  <div class="g-recaptcha" data-sitekey="6Lek7NsUAAAAAJXDWigJdnrQhek6oJRYLfS3J5mq">
-    <input />
-  </div>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <div class="g-recaptcha" data-sitekey="6Lff7tsUAAAAAAUXohp9oK_0kUokuc1GBMML8sz-"></div>
 
   <section id="posts" class="posts-expand">
     {% for post in page.posts %}
