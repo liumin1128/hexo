@@ -11,8 +11,7 @@
 
 {% block content %}
 
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+  <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
   <div class="g-recaptcha" data-sitekey="6Lff7tsUAAAAAAUXohp9oK_0kUokuc1GBMML8sz-"></div>
 
   <section id="posts" class="posts-expand">
