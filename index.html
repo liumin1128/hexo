@@ -865,6 +865,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/动态加载资源文件/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liumin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="本王今年八岁的blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/22/动态加载资源文件/" class="post-title-link" itemprop="http://liumin.me/index.html">dynamic-file 动态加载资源文件</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-22 11:13:52" itemprop="dateCreated datePublished" datetime="2019-03-22T11:13:52+08:00">2019-03-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-23 21:17:37" itemprop="dateModified" datetime="2020-01-23T21:17:37+08:00">2020-01-23</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>umd规范，无任何依赖，动态加载js、css文件返回一个promise。</p>
+<p>github: <a href="https://github.com/liumin1128/dynamic-file" target="_blank" rel="noopener">https://github.com/liumin1128/dynamic-file</a></p>
+<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm i -S dynamic-file</span><br><span class="line"></span><br><span class="line">// or</span><br><span class="line">yarn add dynamic-file</span><br></pre></td></tr></table></figure>
+<h2 id="use"><a href="#use" class="headerlink" title="use"></a>use</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import dynamicFile from &apos;dynamic-file&apos;</span><br><span class="line"></span><br><span class="line">&lt;script src=&quot;../dist/main.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  </span><br><span class="line">if(!window.jquery) &#123;</span><br><span class="line">    dynamicFile([</span><br><span class="line">      &apos;https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js&apos;</span><br><span class="line">    ]).then(() =&gt; &#123;</span><br><span class="line">      alert(&apos;success！！！&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="why"><a href="#why" class="headerlink" title="why?"></a>why?</h2><p>前端开发过程中，经常需要加载一些外部资源，类似各种sdk，css主题。有时我们不希望在head中声名，因为这个文件可能只在某些页面中，甚至某些组件中才被需要，全局加载无疑会带来不必要的性能问题，所以可能会=会需要一种运行在浏览器端，动态加载css或js的方法。</p>
+<p>只需简单声明即可完成加载，该方法返回一个promise，等待文件加载完成调用后续逻辑。</p>
+<p>支持UMD，浏览器可以在window.dynamicFile中直接使用。</p>
+<h2 id="需要注意的"><a href="#需要注意的" class="headerlink" title="需要注意的"></a>需要注意的</h2><p>内容基于promise.all实现并行加载，如果需要加载多个文件，并且其中某些文件有依赖关系，可以将分两步加载，将第二步放在第一步的then中执行。</p>
+<p>并未实现单例模式，需要自行判断文件是否已经加载过，比如通过window.jquery。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/Populate Mongoose 填充的15种姿势/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1015,168 +1177,6 @@
 <h3 id="15-中间件中填充"><a href="#15-中间件中填充" class="headerlink" title="15. 中间件中填充"></a>15. 中间件中填充</h3><p>还可以 pre 或 post 勾子中使用填充。如果始终要填充某个字段，请查看 mongoose-autopopulate 插件。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Always attach `populate()` to `find()` calls</span></span><br><span class="line">MySchema.pre(<span class="string">"find"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.populate(<span class="string">"user"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Always `populate()` after `find()` calls. Useful if you want to selectively populate</span></span><br><span class="line"><span class="comment">// based on the docs found.</span></span><br><span class="line">MySchema.post(<span class="string">"find"</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">docs</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> doc <span class="keyword">of</span> docs) &#123;</span><br><span class="line">    <span class="keyword">if</span> (doc.isPublic) &#123;</span><br><span class="line">      <span class="keyword">await</span> doc.populate(<span class="string">"user"</span>).execPopulate();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// `populate()` after saving. Useful for sending populated data back to the client in an</span></span><br><span class="line"><span class="comment">// update API endpoint</span></span><br><span class="line">MySchema.post(<span class="string">"save"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">doc, next</span>) </span>&#123;</span><br><span class="line">  doc</span><br><span class="line">    .populate(<span class="string">"user"</span>)</span><br><span class="line">    .execPopulate()</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      next();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>原文链接：<a href="https://itbilu.com/nodejs/npm/HkAKMTECm.html" target="_blank" rel="noopener">https://itbilu.com/nodejs/npm/HkAKMTECm.html</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/动态加载资源文件/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liumin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="本王今年八岁的blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/22/动态加载资源文件/" class="post-title-link" itemprop="http://liumin.me/index.html">dynamic-file 动态加载资源文件</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-03-22 11:13:52" itemprop="dateCreated datePublished" datetime="2019-03-22T11:13:52+08:00">2019-03-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-01-23 21:17:37" itemprop="dateModified" datetime="2020-01-23T21:17:37+08:00">2020-01-23</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>umd规范，无任何依赖，动态加载js、css文件返回一个promise。</p>
-<p>github: <a href="https://github.com/liumin1128/dynamic-file" target="_blank" rel="noopener">https://github.com/liumin1128/dynamic-file</a></p>
-<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm i -S dynamic-file</span><br><span class="line"></span><br><span class="line">// or</span><br><span class="line">yarn add dynamic-file</span><br></pre></td></tr></table></figure>
-<h2 id="use"><a href="#use" class="headerlink" title="use"></a>use</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import dynamicFile from &apos;dynamic-file&apos;</span><br><span class="line"></span><br><span class="line">&lt;script src=&quot;../dist/main.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  </span><br><span class="line">if(!window.jquery) &#123;</span><br><span class="line">    dynamicFile([</span><br><span class="line">      &apos;https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js&apos;,</span><br><span class="line">      &apos;https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js&apos;</span><br><span class="line">    ]).then(() =&gt; &#123;</span><br><span class="line">      alert(&apos;success！！！&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="why"><a href="#why" class="headerlink" title="why?"></a>why?</h2><p>前端开发过程中，经常需要加载一些外部资源，类似各种sdk，css主题。有时我们不希望在head中声名，因为这个文件可能只在某些页面中，甚至某些组件中才被需要，全局加载无疑会带来不必要的性能问题，所以可能会=会需要一种运行在浏览器端，动态加载css或js的方法。</p>
-<p>只需简单声明即可完成加载，该方法返回一个promise，等待文件加载完成调用后续逻辑。</p>
-<p>支持UMD，浏览器可以在window.dynamicFile中直接使用。</p>
-<h2 id="需要注意的"><a href="#需要注意的" class="headerlink" title="需要注意的"></a>需要注意的</h2><p>内容基于promise.all实现并行加载，如果需要加载多个文件，并且其中某些文件有依赖关系，可以将分两步加载，将第二步放在第一步的then中执行。</p>
-<p>并未实现单例模式，需要自行判断文件是否已经加载过，比如通过window.jquery。</p>
 
           
         
