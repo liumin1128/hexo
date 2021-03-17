@@ -865,6 +865,212 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/Populate Mongoose 填充的15种姿势/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liumin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="本王今年八岁的blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/22/Populate Mongoose 填充的15种姿势/" class="post-title-link" itemprop="http://liumin.me/index.html">dynamic-file 动态加载资源文件</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-22 11:13:52" itemprop="dateCreated datePublished" datetime="2019-03-22T11:13:52+08:00">2019-03-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-03-17 20:51:21" itemprop="dateModified" datetime="2021-03-17T20:51:21+08:00">2021-03-17</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>MongoDB 在&gt;=3.2 版本中提供了类似连接的$lookup 聚合运算符。而在 Mongoose 中，有一个更强大的替代方法叫做 populate()，它允许你引用其它集合中的文档。</p>
+<p>填充(Population)是使用来自其它集合中的文档自动替换文档中的指定路径的过程。填充可以是单个文档、多个文档、普通对象、多个普通对象或从查询返回的所有对象。来看一些例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mongoose = <span class="built_in">require</span>(<span class="string">"mongoose"</span>);</span><br><span class="line"><span class="keyword">var</span> Schema = mongoose.Schema;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> personSchema = Schema(&#123;</span><br><span class="line">  _id: Schema.Types.ObjectId,</span><br><span class="line">  name: <span class="built_in">String</span>,</span><br><span class="line">  age: <span class="built_in">Number</span>,</span><br><span class="line">  stories: [&#123; <span class="attr">type</span>: Schema.Types.ObjectId, <span class="attr">ref</span>: <span class="string">"Story"</span> &#125;],</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> storySchema = Schema(&#123;</span><br><span class="line">  author: &#123; <span class="attr">type</span>: Schema.Types.ObjectId, <span class="attr">ref</span>: <span class="string">"Person"</span> &#125;,</span><br><span class="line">  title: <span class="built_in">String</span>,</span><br><span class="line">  fans: [&#123; <span class="attr">type</span>: Schema.Types.ObjectId, <span class="attr">ref</span>: <span class="string">"Person"</span> &#125;],</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Story = mongoose.model(<span class="string">"Story"</span>, storySchema);</span><br><span class="line"><span class="keyword">var</span> Person = mongoose.model(<span class="string">"Person"</span>, personSchema);</span><br></pre></td></tr></table></figure>
+<p>以上我们创建了两个 Model。其中，Person 模型有一个 stories 字段，其被设置为 ObjectId 数组。ref 选项会告诉 Mongoose 哪个 Model 会在填充的时候使用，在我们示例中为 Story 模型，所存储的_id 必须是 Story 模型中的文档的_id。</p>
+<p>注意：ObjectId, Number, String 和 Buffer 都可以用于引用(ref)。但是，除非必要情况下，更推荐使用 ObjectId。</p>
+<h3 id="2-保存引用"><a href="#2-保存引用" class="headerlink" title="2. 保存引用"></a>2. 保存引用</h3><p>将 ref 保存到其他文档的与通常保存属性的方式相同，只需指定_id 值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> author = <span class="keyword">new</span> Person(&#123;</span><br><span class="line">  _id: <span class="keyword">new</span> mongoose.Types.ObjectId(),</span><br><span class="line">  name: <span class="string">"Ian Fleming"</span>,</span><br><span class="line">  age: <span class="number">50</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">author.save(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> story1 = <span class="keyword">new</span> Story(&#123;</span><br><span class="line">    title: <span class="string">"Casino Royale"</span>,</span><br><span class="line">    author: author._id, <span class="comment">// assign the _id from the person</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  story1.save(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line">    <span class="comment">// thats it!</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="3-填充"><a href="#3-填充" class="headerlink" title="3. 填充"></a>3. 填充</h3><p>目前为止，我们所做的并没什么不同，只是创建了一个 Preson 和 Story。接下来看一下，怎样在查询绑定时填充 story 的 author：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Story.findOne(&#123; <span class="attr">title</span>: <span class="string">"Casino Royale"</span> &#125;)</span><br><span class="line">  .populate(<span class="string">"author"</span>)</span><br><span class="line">  .exec(<span class="function"><span class="keyword">function</span> (<span class="params">err, story</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"The author is %s"</span>, story.author.name);</span><br><span class="line">    <span class="comment">// prints "The author is Ian Fleming"</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>被填充的路径不再是原始的_id，其值将被替换为从数据库返回的 mongoose 文档，此操作会在返回结果之前执行单独的查询。</p>
+<p>ref 值是一个数组时同样可用，只需要在查询时调用 populate 方法，文档数组就会替换原有的_id。</p>
+<h3 id="4-设置填充字段"><a href="#4-设置填充字段" class="headerlink" title="4. 设置填充字段"></a>4. 设置填充字段</h3><p>在 Mongoose&gt;= 4.0 后，我们可以像下面这样手工设置填充字段：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Story.findOne(&#123; <span class="attr">title</span>: <span class="string">"Casino Royale"</span> &#125;, <span class="function"><span class="keyword">function</span> (<span class="params">error, story</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (error) &#123;</span><br><span class="line">    <span class="keyword">return</span> handleError(error);</span><br><span class="line">  &#125;</span><br><span class="line">  story.author = author;</span><br><span class="line">  <span class="built_in">console</span>.log(story.author.name); <span class="comment">// prints "Ian Fleming"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="5-字段选择"><a href="#5-字段选择" class="headerlink" title="5. 字段选择"></a>5. 字段选择</h3><p>如果我们只想返回填充的文档某些字段，该怎么操作呢？这时可以将所需的字段名称作为第二个参数传递给 populate 方法来实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Story.findOne(&#123; <span class="attr">title</span>: <span class="regexp">/casino royale/i</span> &#125;)</span><br><span class="line">  .populate(<span class="string">"author"</span>, <span class="string">"name"</span>) <span class="comment">// 仅返回 Person 的'name'字段</span></span><br><span class="line">  .exec(<span class="function"><span class="keyword">function</span> (<span class="params">err, story</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"The author is %s"</span>, story.author.name);</span><br><span class="line">    <span class="comment">// prints "The author is Ian Fleming"</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"The authors age is %s"</span>, story.author.age);</span><br><span class="line">    <span class="comment">// prints "The authors age is null'</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="6-填充多个路径"><a href="#6-填充多个路径" class="headerlink" title="6. 填充多个路径"></a>6. 填充多个路径</h3><p>需要填充多个路径时，只需要多次调用 populate()方法即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Story.</span><br><span class="line">  find(...).</span><br><span class="line">  populate(<span class="string">'fans'</span>).</span><br><span class="line">  populate(<span class="string">'author'</span>).</span><br><span class="line">  exec();</span><br></pre></td></tr></table></figure>
+<p>但是，如果在同一个路径上多次调用 populate()方法，仅最后一次调用会生效：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The 2nd `populate()` call below overwrites the first because they</span></span><br><span class="line"><span class="comment">// both populate 'fans'.</span></span><br><span class="line">Story.find()</span><br><span class="line">  .populate(&#123; <span class="attr">path</span>: <span class="string">"fans"</span>, <span class="attr">select</span>: <span class="string">"name"</span> &#125;)</span><br><span class="line">  .populate(&#123; <span class="attr">path</span>: <span class="string">"fans"</span>, <span class="attr">select</span>: <span class="string">"email"</span> &#125;);</span><br><span class="line"><span class="comment">// The above is equivalent to:</span></span><br><span class="line">Story.find().populate(&#123; <span class="attr">path</span>: <span class="string">"fans"</span>, <span class="attr">select</span>: <span class="string">"email"</span> &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="7-查询条件与其它选项"><a href="#7-查询条件与其它选项" class="headerlink" title="7. 查询条件与其它选项"></a>7. 查询条件与其它选项</h3><p>接下来，我们想按年龄(age)来对的 fans 进行筛选，并且只返回他们的名字，并且最多返回其中的 5 个。这时，可以像下面这样操作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Story.</span><br><span class="line">  find(...).</span><br><span class="line">  populate(&#123;</span><br><span class="line">    path: <span class="string">'fans'</span>,</span><br><span class="line">    match: &#123; <span class="attr">age</span>: &#123; <span class="attr">$gte</span>: <span class="number">21</span> &#125;&#125;,</span><br><span class="line">    <span class="comment">// Explicitly exclude `_id`, see http://bit.ly/2aEfTdB</span></span><br><span class="line">    select: <span class="string">'name -_id'</span>,</span><br><span class="line">    options: &#123; <span class="attr">limit</span>: <span class="number">5</span> &#125;</span><br><span class="line">  &#125;).</span><br><span class="line">  exec();</span><br></pre></td></tr></table></figure>
+<h3 id="8-引用子文档"><a href="#8-引用子文档" class="headerlink" title="8. 引用子文档"></a>8. 引用子文档</h3><p>在前面我们通过 story 引用到了 author，但我们可能会发现，如果是通过 author 对象则无法获取 story。因为没有任何 story 对象被“推送”到 author.stories。</p>
+<p>首先，你可能希望 author 知道哪些 story 是他们的。通常，你的模式应该在“many”侧具有父指针来处理一对多(one-to-many)关系。或者，你可以有一个指向子对象的数组，并可以将文档 push()到数组，如下所示。</p>
+<p>author.stories.push(story1);<br>author.save(callback);<br>这样我们就可以组合执行 find 和 populate：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Person.findOne(&#123; <span class="attr">name</span>: <span class="string">"Ian Fleming"</span> &#125;)</span><br><span class="line">  .populate(<span class="string">"stories"</span>) <span class="comment">// only works if we pushed refs to children</span></span><br><span class="line">  .exec(<span class="function"><span class="keyword">function</span> (<span class="params">err, person</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line">    <span class="built_in">console</span>.log(person);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>值得考虑的是，我们是否确定需要两组指针，因为它们可能会失去同步。相反，我们也可以跳过填充而直接找到所需要的 stroy：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Story.find(&#123; <span class="attr">author</span>: author._id &#125;).exec(<span class="function"><span class="keyword">function</span> (<span class="params">err, stories</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err) <span class="keyword">return</span> handleError(err);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"The stories are an array: "</span>, stories);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>通过查询填充所返回的文档是全功能的（是一个 Mongoose 文档），可 remove、可 save，除非指定了 lean 选项。不要将它们与子文档混淆。调用 remove 方法时要小心，因为这些文档会从数据库中删除，而不仅仅是数组。</p>
+<h3 id="9-填充己存在的文档"><a href="#9-填充己存在的文档" class="headerlink" title="9. 填充己存在的文档"></a>9. 填充己存在的文档</h3><p>如果我们已经有一个 mongoose 文档并想要填充它的一些路径，mongoose &gt;= 3.6 的 document#populate()方法支持这一功能。</p>
+<h3 id="10-填充多个己存在的文档"><a href="#10-填充多个己存在的文档" class="headerlink" title="10. 填充多个己存在的文档"></a>10. 填充多个己存在的文档</h3><p>如果我们有一个或多个 mongoose 文档甚至普通对象(像 mapReduce 的输出)，可以使用 mongoose &gt;= 3.6 所提供的 Model.populate()方法来填充。这也是 document#populate()和 query#populate 填充文档的方式。</p>
+<h3 id="11-多层级填充"><a href="#11-多层级填充" class="headerlink" title="11. 多层级填充"></a>11. 多层级填充</h3><p>假设有如下一个 Schema，用于跟踪用户（user）的朋友（friend）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span>,</span><br><span class="line">  friends: [&#123; <span class="attr">type</span>: ObjectId, <span class="attr">ref</span>: <span class="string">"User"</span> &#125;],</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>populate 使你有了一个用户的朋友列表，这时如果还想得到用户的朋友的朋友呢？可以指定 populate 选项来告诉 mongoose 填充所有用户朋友的 friends 数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">User.findOne(&#123; <span class="attr">name</span>: <span class="string">"Val"</span> &#125;).populate(&#123;</span><br><span class="line">  path: <span class="string">"friends"</span>,</span><br><span class="line">  <span class="comment">// Get friends of friends - populate the 'friends' array for every friend</span></span><br><span class="line">  populate: &#123; <span class="attr">path</span>: <span class="string">"friends"</span> &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="12-跨数据库填充"><a href="#12-跨数据库填充" class="headerlink" title="12. 跨数据库填充"></a>12. 跨数据库填充</h3><p>假设有一个表示事件的模式（eventSchema），以及一个表示会话的模式（conversationSchema）。 每个事件都有一个对应的会话线程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> eventSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span>,</span><br><span class="line">  <span class="comment">// The id of the corresponding conversation</span></span><br><span class="line">  <span class="comment">// Notice there's no ref here!</span></span><br><span class="line">  conversation: ObjectId</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> conversationSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  numMessages: <span class="built_in">Number</span></span><br><span class="line">&#125;);</span><br><span class="line">此外，假设事件和会话存储在不同的MongoDB实例中。</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> db1 = mongoose.createConnection(<span class="string">'localhost:27000/db1'</span>);</span><br><span class="line"><span class="keyword">var</span> db2 = mongoose.createConnection(<span class="string">'localhost:27001/db2'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Event = db1.model(<span class="string">'Event'</span>, eventSchema);</span><br><span class="line"><span class="keyword">var</span> Conversation = db2.model(<span class="string">'Conversation'</span>, conversationSchema);</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，将无法正常使用 populate()。conversation 字段将始终为 null，因为 populate()不知道要使用哪个模型。但是，可以显式指定模型：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Event.find()</span><br><span class="line">  .populate(&#123; <span class="attr">path</span>: <span class="string">"conversation"</span>, <span class="attr">model</span>: Conversation &#125;)</span><br><span class="line">  .exec(<span class="function"><span class="keyword">function</span> (<span class="params">error, docs</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>这可以称为“跨数据库填充”，因为它使你能够跨 MongoDB 数据库，甚至跨 MongoDB 实例填充。</p>
+<h3 id="13-refPath-动态引用"><a href="#13-refPath-动态引用" class="headerlink" title="13. refPath 动态引用"></a>13. refPath 动态引用</h3><p>Mongoose 还可以根据文档中属性的值从多个集合中填充。例如，构建一个用于存储评论（comment）的模式,用户可以评论博客文章或产品：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> commentSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  body: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  on: &#123;</span><br><span class="line">    type: Schema.Types.ObjectId,</span><br><span class="line">    required: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// Instead of a hardcoded model name in `ref`, `refPath` means Mongoose</span></span><br><span class="line">    <span class="comment">// will look at the `onModel` property to find the right model.</span></span><br><span class="line">    refPath: <span class="string">"onModel"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  onModel: &#123;</span><br><span class="line">    type: <span class="built_in">String</span>,</span><br><span class="line">    required: <span class="literal">true</span>,</span><br><span class="line">    enum: [<span class="string">"BlogPost"</span>, <span class="string">"Product"</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Product = mongoose.model(<span class="string">"Product"</span>, <span class="keyword">new</span> Schema(&#123; <span class="attr">name</span>: <span class="built_in">String</span> &#125;));</span><br><span class="line"><span class="keyword">const</span> BlogPost = mongoose.model(<span class="string">"BlogPost"</span>, <span class="keyword">new</span> Schema(&#123; <span class="attr">title</span>: <span class="built_in">String</span> &#125;));</span><br><span class="line"><span class="keyword">const</span> Comment = mongoose.model(<span class="string">"Comment"</span>, commentSchema);</span><br></pre></td></tr></table></figure>
+<p>refPath 选项是 ref 的更复杂的替代选择。ref 是一个字符串，Mongoose 将始终查询相同的模型以查找填充的子文件。而使用 refPath 时，你可以配置 Mongoose 每个文档所应使用的模型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> book = <span class="keyword">await</span> Product.create(&#123; <span class="attr">name</span>: <span class="string">"The Count of Monte Cristo"</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> post = <span class="keyword">await</span> BlogPost.create(&#123; <span class="attr">title</span>: <span class="string">"Top 10 French Novels"</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> commentOnBook = <span class="keyword">await</span> Comment.create(&#123;</span><br><span class="line">  body: <span class="string">"Great read"</span>,</span><br><span class="line">  on: book._id,</span><br><span class="line">  onModel: <span class="string">"Product"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> commentOnPost = <span class="keyword">await</span> Comment.create(&#123;</span><br><span class="line">  body: <span class="string">"Very informative"</span>,</span><br><span class="line">  on: post._id,</span><br><span class="line">  onModel: <span class="string">"BlogPost"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// The below `populate()` works even though one comment references the</span></span><br><span class="line"><span class="comment">// 'Product' collection and the other references the 'BlogPost' collection.</span></span><br><span class="line"><span class="keyword">const</span> comments = <span class="keyword">await</span> Comment.find().populate(<span class="string">"on"</span>).sort(&#123; <span class="attr">body</span>: <span class="number">1</span> &#125;);</span><br><span class="line">comments[<span class="number">0</span>].on.name; <span class="comment">// "The Count of Monte Cristo"</span></span><br><span class="line">comments[<span class="number">1</span>].on.title; <span class="comment">// "Top 10 French Novels"</span></span><br></pre></td></tr></table></figure>
+<p>另一种方法是在 commentSchema 上定义单独的 blogPost 和 product 属性，然后在两个属性上 populate()：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> commentSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  body: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  product: &#123;</span><br><span class="line">    type: Schema.Types.ObjectId,</span><br><span class="line">    required: <span class="literal">true</span>,</span><br><span class="line">    ref: <span class="string">"Product"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  blogPost: &#123;</span><br><span class="line">    type: Schema.Types.ObjectId,</span><br><span class="line">    required: <span class="literal">true</span>,</span><br><span class="line">    ref: <span class="string">"BlogPost"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// The below `populate()` is equivalent to the `refPath` approach, you</span></span><br><span class="line"><span class="comment">// just need to make sure you `populate()` both `product` and `blogPost`.</span></span><br><span class="line"><span class="keyword">const</span> comments = <span class="keyword">await</span> Comment.find()</span><br><span class="line">  .populate(<span class="string">"product"</span>)</span><br><span class="line">  .populate(<span class="string">"blogPost"</span>)</span><br><span class="line">  .sort(&#123; <span class="attr">body</span>: <span class="number">1</span> &#125;);</span><br><span class="line">comments[<span class="number">0</span>].product.name; <span class="comment">// "The Count of Monte Cristo"</span></span><br><span class="line">comments[<span class="number">1</span>].blogPost.title; <span class="comment">// "Top 10 French Novels"</span></span><br></pre></td></tr></table></figure>
+<p>定义单独的 blogPost 和 product 属性适用于这个简单示例。但是，如果也允许用户对文章或其他评论发表评论，则需要向模式添加更多属性。除非你使用 mongoose-autopopulate，否则你还需要对每个属性进行额外的 populate()调用。使用 refPath 意味着你只需要 2 个模式路径和一个 populate()调用，而无论 commentSchema 可以指向多少个模型。</p>
+<h3 id="14-虚拟（virtual）属性-路径填充"><a href="#14-虚拟（virtual）属性-路径填充" class="headerlink" title="14. 虚拟（virtual）属性/路径填充"></a>14. 虚拟（virtual）属性/路径填充</h3><p>目前为止，我们都是基于_id 字段进行的填充，但在某些情况下，这并不适用。特别是，无限制增长的数组是 MongoDB 反模式(One-to-Many)。使用 mongoose 虚拟属性，可以在文档之间定义更复杂的关系。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> PersonSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span>,</span><br><span class="line">  band: <span class="built_in">String</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> BandSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span>,</span><br><span class="line">&#125;);</span><br><span class="line">BandSchema.virtual(<span class="string">"members"</span>, &#123;</span><br><span class="line">  ref: <span class="string">"Person"</span>, <span class="comment">// The model to use</span></span><br><span class="line">  localField: <span class="string">"name"</span>, <span class="comment">// Find people where `localField`</span></span><br><span class="line">  foreignField: <span class="string">"band"</span>, <span class="comment">// is equal to `foreignField`</span></span><br><span class="line">  <span class="comment">// If `justOne` is true, 'members' will be a single doc as opposed to</span></span><br><span class="line">  <span class="comment">// an array. `justOne` is false by default.</span></span><br><span class="line">  justOne: <span class="literal">false</span>,</span><br><span class="line">  options: &#123; <span class="attr">sort</span>: &#123; <span class="attr">name</span>: <span class="number">-1</span> &#125;, <span class="attr">limit</span>: <span class="number">5</span> &#125;, <span class="comment">// Query options, see http://bit.ly/mongoose-query-options</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Person = mongoose.model(<span class="string">"Person"</span>, PersonSchema);</span><br><span class="line"><span class="keyword">var</span> Band = mongoose.model(<span class="string">"Band"</span>, BandSchema);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Suppose you have 2 bands: "Guns N' Roses" and "Motley Crue"</span></span><br><span class="line"><span class="comment"> * And 4 people: "Axl Rose" and "Slash" with "Guns N' Roses", and</span></span><br><span class="line"><span class="comment"> * "Vince Neil" and "Nikki Sixx" with "Motley Crue"</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Band.find(&#123;&#125;)</span><br><span class="line">  .populate(<span class="string">"members"</span>)</span><br><span class="line">  .exec(<span class="function"><span class="keyword">function</span> (<span class="params">error, bands</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* `bands.members` is now an array of instances of `Person` */</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>需要注意，虚拟属性默认并不包含在 toJSON()的输出中。如果要在使用依赖于 JSON.stringify()的函数（如：Express 的 res.json()函数）中显示虚拟属性填充，则需要在模式的的 toJSON 选项上设置 virtuals:true 选项：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set `virtuals: true` so `res.json()` works</span></span><br><span class="line"><span class="keyword">var</span> BandSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span></span><br><span class="line">&#125;, &#123; <span class="attr">toJSON</span>: &#123; <span class="attr">virtuals</span>: <span class="literal">true</span> &#125; &#125;);</span><br><span class="line">如果您正在使用填充投影（projection），应确保在投影中包含foreignField：</span><br><span class="line"></span><br><span class="line">Band.</span><br><span class="line">  find(&#123;&#125;).</span><br><span class="line">  populate(&#123; <span class="attr">path</span>: <span class="string">'members'</span>, <span class="attr">select</span>: <span class="string">'name'</span> &#125;).</span><br><span class="line">  exec(<span class="function"><span class="keyword">function</span>(<span class="params">error, bands</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Won't work, foreign field `band` is not selected in the projection</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">Band.</span><br><span class="line">  find(&#123;&#125;).</span><br><span class="line">  populate(&#123; <span class="attr">path</span>: <span class="string">'members'</span>, <span class="attr">select</span>: <span class="string">'name band'</span> &#125;).</span><br><span class="line">  exec(<span class="function"><span class="keyword">function</span>(<span class="params">error, bands</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Works, foreign field `band` is selected</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="15-中间件中填充"><a href="#15-中间件中填充" class="headerlink" title="15. 中间件中填充"></a>15. 中间件中填充</h3><p>还可以 pre 或 post 勾子中使用填充。如果始终要填充某个字段，请查看 mongoose-autopopulate 插件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Always attach `populate()` to `find()` calls</span></span><br><span class="line">MySchema.pre(<span class="string">"find"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.populate(<span class="string">"user"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Always `populate()` after `find()` calls. Useful if you want to selectively populate</span></span><br><span class="line"><span class="comment">// based on the docs found.</span></span><br><span class="line">MySchema.post(<span class="string">"find"</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">docs</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> doc <span class="keyword">of</span> docs) &#123;</span><br><span class="line">    <span class="keyword">if</span> (doc.isPublic) &#123;</span><br><span class="line">      <span class="keyword">await</span> doc.populate(<span class="string">"user"</span>).execPopulate();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// `populate()` after saving. Useful for sending populated data back to the client in an</span></span><br><span class="line"><span class="comment">// update API endpoint</span></span><br><span class="line">MySchema.post(<span class="string">"save"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">doc, next</span>) </span>&#123;</span><br><span class="line">  doc</span><br><span class="line">    .populate(<span class="string">"user"</span>)</span><br><span class="line">    .execPopulate()</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      next();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>原文链接：<a href="https://itbilu.com/nodejs/npm/HkAKMTECm.html" target="_blank" rel="noopener">https://itbilu.com/nodejs/npm/HkAKMTECm.html</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://liumin.me/2019/03/22/动态加载资源文件/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1896,192 +2102,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/03/30/服务器迁移到centos/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liumin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="本王今年八岁的blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/03/30/服务器迁移到centos/" class="post-title-link" itemprop="http://liumin.me/index.html">服务器迁移到centos</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-03-30 10:55:49" itemprop="dateCreated datePublished" datetime="2018-03-30T10:55:49+08:00">2018-03-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-01-23 21:17:37" itemprop="dateModified" datetime="2020-01-23T21:17:37+08:00">2020-01-23</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="迁移服务器到centos"><a href="#迁移服务器到centos" class="headerlink" title="迁移服务器到centos"></a>迁移服务器到centos</h3><p>更新内核，并升级CentOS</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update kernel  </span><br><span class="line">yum update &amp;&amp; yum upgrade</span><br></pre></td></tr></table></figure>
-<p>git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install git</span><br></pre></td></tr></table></figure>
-<p>zsh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install zsh</span><br></pre></td></tr></table></figure>
-<p>o-my-zsh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</span><br></pre></td></tr></table></figure>
-<p>nvm</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | zsh</span><br></pre></td></tr></table></figure>
-<p>source ~/.zshrc</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node nvm install</span><br></pre></td></tr></table></figure>
-<h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/nginx.repo</span><br><span class="line"></span><br><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">yum list |grep nginx</span><br><span class="line">yum -y install nginx</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2129,7 +2149,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2189,7 +2209,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">15</span>
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2228,7 +2250,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
