@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "hexo s",
-    "update": "hexo g && hexo deploy"
+    "update": "nvm use 10 && hexo g && hexo deploy"
   },
   "hexo": {
     "version": "3.8.0"
