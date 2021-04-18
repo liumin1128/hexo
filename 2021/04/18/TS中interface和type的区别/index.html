@@ -108,25 +108,27 @@
 
 
 
-  <meta name="description" content="迁移服务器到centos更新内核，并升级CentOS 12yum update kernel  yum update &amp;amp;&amp;amp; yum upgrade git 1yum -y install git zsh 1yum -y install zsh o-my-zsh 1sh -c &amp;quot;$(wget https://raw.githubusercontent.com/robbyru">
-<meta name="keywords" content="node,linux">
+  <meta name="description" content="官方解释 An interface can be named in an extends or implements clause, but a type alias for an object type literal cannot.An interface can have multiple merged declarations, but a type alias for an object">
+<meta name="keywords" content="ts">
 <meta property="og:type" content="article">
-<meta property="og:title" content="服务器迁移到centos">
-<meta property="og:url" content="http://liumin.me/2018/03/30/服务器迁移到centos/index.html">
+<meta property="og:title" content="TS中interface和type的区别">
+<meta property="og:url" content="http://liumin.me/2021/04/18/TS中interface和type的区别/index.html">
 <meta property="og:site_name" content="本王今年八岁的blog">
-<meta property="og:description" content="迁移服务器到centos更新内核，并升级CentOS 12yum update kernel  yum update &amp;amp;&amp;amp; yum upgrade git 1yum -y install git zsh 1yum -y install zsh o-my-zsh 1sh -c &amp;quot;$(wget https://raw.githubusercontent.com/robbyru">
+<meta property="og:description" content="官方解释 An interface can be named in an extends or implements clause, but a type alias for an object type literal cannot.An interface can have multiple merged declarations, but a type alias for an object">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-23T13:17:37.000Z">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/214411/1596882674175-a967ae56-4067-422b-b7f8-4c401929a767.png?x-oss-process=image%2Fresize%2Cw_746">
+<meta property="og:updated_time" content="2021-04-18T07:17:21.481Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="服务器迁移到centos">
-<meta name="twitter:description" content="迁移服务器到centos更新内核，并升级CentOS 12yum update kernel  yum update &amp;amp;&amp;amp; yum upgrade git 1yum -y install git zsh 1yum -y install zsh o-my-zsh 1sh -c &amp;quot;$(wget https://raw.githubusercontent.com/robbyru">
+<meta name="twitter:title" content="TS中interface和type的区别">
+<meta name="twitter:description" content="官方解释 An interface can be named in an extends or implements clause, but a type alias for an object type literal cannot.An interface can have multiple merged declarations, but a type alias for an object">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/214411/1596882674175-a967ae56-4067-422b-b7f8-4c401929a767.png?x-oss-process=image%2Fresize%2Cw_746">
 
 
 
 
 
 
-  <link rel="canonical" href="http://liumin.me/2018/03/30/服务器迁移到centos/">
+  <link rel="canonical" href="http://liumin.me/2021/04/18/TS中interface和type的区别/">
 
 
 
@@ -136,7 +138,7 @@
   };
 </script>
 
-  <title>服务器迁移到centos | 本王今年八岁的blog</title>
+  <title>TS中interface和type的区别 | 本王今年八岁的blog</title>
   
 
 
@@ -335,7 +337,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://liumin.me/2018/03/30/服务器迁移到centos/">
+    <link itemprop="mainEntityOfPage" href="http://liumin.me/2021/04/18/TS中interface和type的区别/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="liumin">
@@ -352,7 +354,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">服务器迁移到centos
+          <h1 class="post-title" itemprop="name headline">TS中interface和type的区别
               
             
           </h1>
@@ -377,46 +379,16 @@
                 
               
 
-              <time title="Created: 2018-03-30 10:55:49" itemprop="dateCreated datePublished" datetime="2018-03-30T10:55:49+08:00">2018-03-30</time>
+              <time title="Created: 2021-04-18 15:17:00 / Modified: 15:17:21" itemprop="dateCreated datePublished" datetime="2021-04-18T15:17:00+08:00">2021-04-18</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-01-23 21:17:37" itemprop="dateModified" datetime="2020-01-23T21:17:37+08:00">2020-01-23</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -445,21 +417,30 @@
       
 
       
-        <h3 id="迁移服务器到centos"><a href="#迁移服务器到centos" class="headerlink" title="迁移服务器到centos"></a>迁移服务器到centos</h3><p>更新内核，并升级CentOS</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update kernel  </span><br><span class="line">yum update &amp;&amp; yum upgrade</span><br></pre></td></tr></table></figure>
-<p>git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install git</span><br></pre></td></tr></table></figure>
-<p>zsh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install zsh</span><br></pre></td></tr></table></figure>
-<p>o-my-zsh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</span><br></pre></td></tr></table></figure>
-<p>nvm</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | zsh</span><br></pre></td></tr></table></figure>
-<p>source ~/.zshrc</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node nvm install</span><br></pre></td></tr></table></figure>
-<h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/nginx.repo</span><br><span class="line"></span><br><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">yum list |grep nginx</span><br><span class="line">yum -y install nginx</span><br></pre></td></tr></table></figure>
+        <h3 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h3><blockquote>
+<p>An interface can be named in an extends or implements clause, but a type alias for an object type literal cannot.<br>An interface can have multiple merged declarations, but a type alias for an object type literal cannot.</p>
+</blockquote>
+<h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h3><ol>
+<li>都可以描述一个对象或者函数</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface</span></span><br><span class="line">interface User &#123;</span><br><span class="line">	name: string</span><br><span class="line">  age: number</span><br><span class="line">  (name: string, age; number): <span class="keyword">void</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// type</span></span><br><span class="line">type User = &#123;</span><br><span class="line">	name: string</span><br><span class="line">  age: number</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">type setProps = <span class="function">(<span class="params">name: string, age: number</span>) =&gt;</span> <span class="keyword">void</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>都可以进行拓展</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface extends interface</span></span><br><span class="line">interface Name &#123; </span><br><span class="line">  name: string;  </span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">interface User extends Name &#123; </span><br><span class="line">  age: number; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// type extends type</span></span><br><span class="line">type Name = &#123;</span><br><span class="line">	name: string</span><br><span class="line">&#125;</span><br><span class="line">type User = Name &amp; &#123; <span class="attr">age</span>: number &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// interface extends type</span></span><br><span class="line">interface User extends Name</span><br><span class="line">  </span><br><span class="line"><span class="comment">// type extends interface</span></span><br><span class="line">interface Name &#123;</span><br><span class="line">	name: string</span><br><span class="line">&#125;</span><br><span class="line">type user = Name &amp; &#123;</span><br><span class="line">	age: number</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h3><ol>
+<li>type可以的而interface不行的</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基本类型别名</span></span><br><span class="line">type Name = string</span><br><span class="line"></span><br><span class="line"><span class="comment">// 联合类型</span></span><br><span class="line">interface Dog &#123;</span><br><span class="line">    wong();</span><br><span class="line">&#125;</span><br><span class="line">interface Cat &#123;</span><br><span class="line">    miao();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Pet = Dog | Cat</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体定义数组每个位置的类型</span></span><br><span class="line">type PetList = [Dog, Pet]</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>type 语句中还可以使用 typeof 获取实例的 类型进行赋值</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当你想获取一个变量的类型时，使用 typeof</span></span><br><span class="line"><span class="keyword">let</span> div = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">type B = <span class="keyword">typeof</span> div</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>interface 可以而 type 不行</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface能够声明合并</span></span><br><span class="line">interface User &#123;</span><br><span class="line">  name: string</span><br><span class="line">  age: number</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface User &#123;</span><br><span class="line">  sex: string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">User 接口为 &#123;</span></span><br><span class="line"><span class="comment">  name: string</span></span><br><span class="line"><span class="comment">  age: number</span></span><br><span class="line"><span class="comment">  sex: string </span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/214411/1596882674175-a967ae56-4067-422b-b7f8-4c401929a767.png?x-oss-process=image%2Fresize%2Cw_746" alt=""></p>
 
       
     </div>
@@ -483,9 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/node/" rel="tag"># node</a>
-          
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/ts/" rel="tag"># ts</a>
           
         </div>
       
@@ -498,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/28/浅谈web前端技术·入门篇（一）/" rel="next" title="浅谈web前端技术·入门篇（一）">
-                <i class="fa fa-chevron-left"></i> 浅谈web前端技术·入门篇（一）
+              <a href="/2020/02/25/recaptcha/" rel="next" title="recaptcha">
+                <i class="fa fa-chevron-left"></i> recaptcha
               </a>
             
           </div>
@@ -507,10 +486,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/21/国内镜像安装Mongodb/" rel="prev" title="国内镜像安装mongodb">
-                国内镜像安装mongodb <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -679,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#迁移服务器到centos"><span class="nav-number">1.</span> <span class="nav-text">迁移服务器到centos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx"><span class="nav-number">2.</span> <span class="nav-text">nginx</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方解释"><span class="nav-number">1.</span> <span class="nav-text">官方解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相同点"><span class="nav-number">2.</span> <span class="nav-text">相同点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同点"><span class="nav-number">3.</span> <span class="nav-text">不同点</span></a></li></ol></div>
             
 
           </div>
